@@ -28,7 +28,7 @@ function fileNotFound(req, res) {
 }
 
 //this fucntion returns a string in other language.
-function reachGoogleApi(Eng_text, res) {
+function reachGoogleApi(eng_text, res) {
     // reaching to the api server initilaizations
     const APIrequest = require('request');
     const http = require('http');
@@ -44,10 +44,10 @@ function reachGoogleApi(Eng_text, res) {
         "source": "en",
         "target": "fa",
         "q": [
-            "example phrase" // the text goes here
+                eng_text // the text goes here
             ]
     }
-
+    
     console.log("English phrase: ", requestObject.q[0]);
 	    
 // The call that makes a request to the API
@@ -77,7 +77,8 @@ function APIcallback(err, APIresHead, APIresBody) {
 		console.log(APIresHead.error);
 	    } else {
 
-			// THIS IS WEHRE YOU SEND IT BACK TO THE BROWSER
+            // THIS IS WEHRE YOU SEND IT BACK TO THE BROWSER
+            console.log(APIresBody);
 			console.log("In Farsi: ", 
             APIresBody.data.translations[0].translatedText);
             respondObject.translation = APIresBody.data.translations[0].translatedText;
