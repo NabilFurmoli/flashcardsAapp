@@ -1,3 +1,4 @@
+
 "use strict"
 
 const APIrequest = require('request');
@@ -14,7 +15,7 @@ let requestObject =
 	"source": "en",
 	"target": "fa",
 	"q": [
-	    "example phrase"
+	    "example phrase" // the text goes here
 	]
     }
 
@@ -35,7 +36,7 @@ APIrequest(
     );
 
     // callback function, called when data is received from API
-    function APIcallback(err, APIresHead, APIresBody) {
+function APIcallback(err, APIresHead, APIresBody) {
 	// gets three objects as input
 	if ((err) || (APIresHead.statusCode != 200)) {
 	    // API is not working
@@ -46,11 +47,13 @@ APIrequest(
 		// API worked but is not giving you data
 		console.log(APIresHead.error);
 	    } else {
-		console.log("In Farsi: ", 
-		    APIresBody.data.translations[0].translatedText);
-		console.log("\n\nJSON was:");
-		console.log(JSON.stringify(APIresBody, undefined, 2));
-		// print it out as a string, nicely formatted
+
+			// THIS IS WEHRE YOU SEND IT BACK TO THE BROWSER
+			console.log("In Farsi: ", 
+			APIresBody.data.translations[0].translatedText);
+			console.log("\n\nJSON was:");
+			console.log(JSON.stringify(APIresBody, undefined, 2));
+			// print it out as a string, nicely formatted
 	    }
 	}
-    } // end callback function
+} // end callback function

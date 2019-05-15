@@ -78,7 +78,6 @@ function APIcallback(err, APIresHead, APIresBody) {
 	    } else {
 
             // THIS IS WEHRE YOU SEND IT BACK TO THE BROWSER
-            console.log(APIresBody);
 			console.log("In Farsi: ", 
             APIresBody.data.translations[0].translatedText);
             respondObject.translation = APIresBody.data.translations[0].translatedText;

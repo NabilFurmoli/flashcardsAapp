@@ -44,4 +44,17 @@ function makeCorsRequest() {
   return   
 }
 
-makeCorsRequest();
+var textInput = document.getElementById('word');
+// Init a timeout variable to be used below
+var timeout = null;
+// Listen for keystroke events
+textInput.onkeyup = function (e) {
+
+    // Clear the timeout if it has already been set.
+    // This will prevent the previous task from executing
+    // if it has been less than <MILLISECONDS>
+    clearTimeout(timeout);
+
+    // Make a new timeout set to go off in 800ms
+    timeout = setTimeout(makeCorsRequest, 500);
+};
