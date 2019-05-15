@@ -8,13 +8,13 @@ function queryHandler(req, res, next) {
     let qObj = req.query;
     console.log(qObj);
     if (qObj.word != undefined) {
-        let respondObject = {};
+        
         // THIS IS WHERE i TAKE TEXT FROM BROWSER AND SEND IT TO THE API
         // ALSO HUNDLE IT WHEN TRANSLATION IS RECIEVED BACK FROM API SERVER
-        respondObject.translation = reachGoogleApi(qObj.word);
+        reachGoogleApi(qObj.word, res);
 
         // SEND IT BACK TO THE BROWSER TO DISPLAY IT
-        res.json(respondObject);
+        //res.json(respondObject);
     }
     else {
 	   next();
@@ -29,10 +29,10 @@ function fileNotFound(req, res) {
 }
 
 //this fucntion returns a string in other language.
-function reachGoogleApi(Eng_text) {
+function reachGoogleApi(Eng_text, res) {
     const APIrequest = require('request');
     const http = require('http');
-    let tranlation_text = "translation empty";
+    let respondObject = {}; 
     const APIkey = 'AIzaSyCes0zvoquPZaDRuNF07nBEl75Eiy7Umgw';  // ADD API KEY HERE
     const url = "https://translation.googleapis.com/language/translate/v2?key="+APIkey
 
@@ -80,23 +80,15 @@ function APIcallback(err, APIresHead, APIresBody) {
 			// THIS IS WEHRE YOU SEND IT BACK TO THE BROWSER
 			console.log("In Farsi: ", 
             APIresBody.data.translations[0].translatedText);
-            tranlation_text = APIresBody.data.translations[0].translatedText;
+            respondObject.translation = APIresBody.data.translations[0].translatedText;
+
 			console.log("\n\nJSON was:");
-			console.log(JSON.stringify(APIresBody, undefined, 2));
+            console.log(JSON.stringify(APIresBody, undefined, 2));
+            res.json(respondObject);
 			// print it out as a string, nicely formatted
 	    }
 	}
 } // end callback function
-
-    return tranlation_text;
-}
-
-function palindrome(text) {
-// Split, reverse and join string to get reversed text
-var reversedText  = text.toLowerCase()
-                    .split('').reverse().join('');
-
-return text = text + reversedText;
 }
 
 // put together the server pipeline
