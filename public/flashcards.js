@@ -27,7 +27,7 @@ function makeCorsRequest() {
               //console.log(JSON.stringify(object, undefined, 2));
 
               var content = document.getElementById("outputGoesHere");
-              content.textContent = object.pal;
+              content.textContent = object.translation;
 		console.log(object);
 	
               console.log("i am done");
