@@ -1,11 +1,12 @@
 
-
+// created an http request
 function createCORSRequest(method, url) {
   let xhr = new XMLHttpRequest();
   xhr.open(method, url, true);  // call its open method
   return xhr;
 }
 
+// make and http request and hundles when the respond is back.
 function makeCorsRequest() {
     let url;
     let theWord = document.getElementById("word").value;
@@ -22,13 +23,14 @@ function makeCorsRequest() {
           }
 
           // Load some functions into response handlers.
+          //runs when respond is back.
           xhr.onload = function() {
               let object = JSON.parse(xhr.responseText); 
               //console.log(JSON.stringify(object, undefined, 2));
 
               var content = document.getElementById("outputGoesHere");
               content.textContent = object.translation;
-		console.log(object);
+		          console.log(object);
 	
               console.log("i am done");
           };

@@ -3,6 +3,7 @@
 const express = require('express')
 const port = 50612 // you need to put your port number here
 
+// this fucntion is triggered if the request is not static.
 function queryHandler(req, res, next) {
     let url = req.url;
     let qObj = req.query;
@@ -11,10 +12,8 @@ function queryHandler(req, res, next) {
         
         // THIS IS WHERE i TAKE TEXT FROM BROWSER AND SEND IT TO THE API
         // ALSO HUNDLE IT WHEN TRANSLATION IS RECIEVED BACK FROM API SERVER
+        // res.json() is triggered inside this fucntion.
         reachGoogleApi(qObj.word, res);
-
-        // SEND IT BACK TO THE BROWSER TO DISPLAY IT
-        //res.json(respondObject);
     }
     else {
 	   next();
@@ -30,6 +29,7 @@ function fileNotFound(req, res) {
 
 //this fucntion returns a string in other language.
 function reachGoogleApi(Eng_text, res) {
+    // reaching to the api server initilaizations
     const APIrequest = require('request');
     const http = require('http');
     let respondObject = {}; 
