@@ -3,21 +3,52 @@
 const express = require('express')
 const port = 50612 // you need to put your port number here
 
+const sqlite3 = require("sqlite3").verbose();  // use sqlite
+const fs = require("fs"); // file system
+
+const dbFileName = "Flashcards.db";
+// makes the object that represents the database in our code
+const db = new sqlite3.Database(dbFileName);  // object, not database.
+
+
 // this fucntion is triggered if the request is not static.
 function queryHandler(req, res, next) {
     let url = req.url;
-    let qObj = req.query;
-    console.log(qObj);
-    if (qObj.word != undefined) {
-        
-        // THIS IS WHERE i TAKE TEXT FROM BROWSER AND SEND IT TO THE API
-        // ALSO HUNDLE IT WHEN TRANSLATION IS RECIEVED BACK FROM API SERVER
-        // res.json() is triggered inside this fucntion.
-        reachGoogleApi(qObj.word, res);
-    }
-    else {
-	   next();
-    }
+    console.log(url);
+    //let isQuery = url.substring(1, 6);
+    // if query then reachgoogle api, else its an database request.
+        let qObj = req.query; // query is an object 
+        console.log(qObj);
+        if (qObj.word != undefined) {
+            
+            // THIS IS WHERE i TAKE TEXT FROM BROWSER AND SEND IT TO THE API
+            // ALSO HUNDLE IT WHEN TRANSLATION IS RECIEVED BACK FROM API SERVER
+            // res.json() is triggered inside this fucntion.
+            reachGoogleApi(qObj.word, res);
+        }
+        else {
+            next();
+        }
+    
+    
+}
+
+
+function storeHundler(req, res, next) {
+    let url = req.url;
+    console.log(url);
+     // reach database to save information
+        let qObj = req.query;
+        console.log(qObj);
+        if (qObj.english != undefined && qObj.other_language != undefined) {
+            
+            console.log("+++++before ging to database");// go to the database and save the information then send the result back to the browser
+            reachDatabase(qObj.english, qObj.other_language, res);
+        }
+        else {
+            next();
+        }
+    
 }
 
 function fileNotFound(req, res) {
@@ -25,6 +56,39 @@ function fileNotFound(req, res) {
     res.type('text/plain');
     res.status(404);
     res.send('Cannot find '+url);
+}
+
+let id = 1;
+function reachDatabase(english_txt, other_language_txt, res) {
+    let respondObject = {};
+    // respondObject.status = "woohoo I saved it";
+    // res.json(respondObject);
+   
+ 
+    // Initialize table.
+    // If the table already exists, causes an error.
+    // Fix the error by removing or renaming Flashcards.db
+    let columns = 'uinqe_IdNum, EngTxt, trans_txt, shownCount, ansCorreclyCount';
+    const cmdStr = 'INSERT INTO Flashcards ('+columns+') VALUES(' +id+", "+english_txt+", "+other_language_txt+')';
+    id++;
+    console.log(cmdStr);
+    db.run(cmdStr,tableCreationCallback);
+
+    // Always use the callback for database operations and print out any
+    // error messages you get.
+    // This database stuff is hard to debug, give yourself a fighting chance.
+    function tableCreationCallback(err) {
+        if (err) {
+        console.log("data storing error",err);
+        respondObject.status = "data storing error";
+        res.json(respondObject);
+        } else {
+        console.log("data stored");
+        respondObject.status = "data stored";
+        res.json(respondObject);
+        db.close();
+        }
+    }
 }
 
 //this fucntion returns a string in other language.
@@ -95,6 +159,7 @@ function APIcallback(err, APIresHead, APIresBody) {
 const app = express()
 app.use(express.static('public'));  // can I find a static file? 
 app.get('/query', queryHandler );   // if not, is it a valid query?
+app.get('/store', storeHundler );
 app.use( fileNotFound );            // otherwise not found
 app.listen(port, function (){console.log('Listening...');} )
 
