@@ -11,10 +11,10 @@ let id = 1;
 // Initialize table.
 // If the table already exists, causes an error.
 // Fix the error by removing or renaming Flashcards.db
-let columns = 'uinqe_IdNum, EngTxt, trans_txt';
+let columns = 'uinqe_IdNum, EngTxt, trans_txt, shownCount, ansCorreclyCount';
 let english_txt = "home";
 let other_language_txt = "khana";
-const cmdStr = 'INSERT INTO Flashcards ('+columns+') VALUES(' +id+", "+english_txt+", "+other_language_txt+')';
+const cmdStr = 'INSERT INTO Flashcards ('+columns+') VALUES(' +id+", "+english_txt+", "+other_language_txt+', 0, 0)';
 id++;
 console.log(cmdStr);
 //const cmdStr = 'CREATE TABLE Flashcards (uinqe_IdNum INT, EngTxt TEXT, trans_txt TEXT, shownCount INT, ansCorreclyCount VARCHAR(100))';

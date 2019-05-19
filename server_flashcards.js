@@ -58,6 +58,7 @@ function fileNotFound(req, res) {
     res.send('Cannot find '+url);
 }
 
+
 let id = 1;
 function reachDatabase(english_txt, other_language_txt, res) {
     let respondObject = {};
@@ -70,11 +71,12 @@ function reachDatabase(english_txt, other_language_txt, res) {
     ///////////PERFORM SANITIZATION //////////////
     // validate user input before usage
     // check to string is not too long
-    let columns = 'uinqe_IdNum, EngTxt, trans_txt, shownCount, ansCorreclyCount';
-    const cmdStr = 'INSERT INTO Flashcards ('+columns+') VALUES(' +id+', @0, @1, 0, 0)';
+    //let columns = 'uinqe_IdNum, EngTxt, trans_txt, shownCount, ansCorreclyCount';
+    //const cmdStr = 'INSERT INTO Flashcards VALUES(' +id+', '+english_txt+', '+other_language_txt+', 0, 0)';
+    const dbStore = 'INSERT INTO Flashcards VALUES(1, $eng_txt, $other_lang_txt, 0, 0)';
     id++;
     console.log(cmdStr);
-    db.run(cmdStr,english_txt, other_language_txt, tableCreationCallback);
+    db.run(dbStore, {$eng_txt: english_txt, $other_lang_txt: other_language_txt}, tableCreationCallback);
 
     // Always use the callback for database operations and print out any
     // error messages you get.
