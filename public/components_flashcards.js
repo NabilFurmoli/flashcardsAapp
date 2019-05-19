@@ -28,7 +28,7 @@ class Save_button extends React.Component {
   render() {
     return (
       React.createElement("div", { className: "save_butt_div" },
-      React.createElement("button", { id: "save_butt_id" }, " Save ")));
+      React.createElement("button", { onClick: RequestToSave, id: "save_butt_id" }, " Save ")));
 
 
   }}
