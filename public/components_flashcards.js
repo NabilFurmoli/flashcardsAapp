@@ -18,7 +18,7 @@ class Text_components extends React.Component {
     return (
       React.createElement("div", { className: "txtbox_div" },
       React.createElement("textarea", { id: "input_txtbox_id", placeholder: "English" }),
-      React.createElement("p", { id: "output_txtbox_id" }, " Translation ")));
+      React.createElement("p", { id: "output_txtbox_id" }, "....")));
 
 
   }}

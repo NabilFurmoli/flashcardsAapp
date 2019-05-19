@@ -6,7 +6,7 @@
 body {
     width: 100vw;
     height: 100vh;
-    font-size: 3vw;
+    font-size: 2vw;
     font-family: Arial, Helvetica Neue, Helvetica, sans-serif;
 }
 
@@ -69,6 +69,7 @@ button {
 
 #input_txtbox_id {
     width: 30%;
+    border: solid 1px #606B9B;
     margin-left: 10%;
     font-size: 100%;
     padding: 2vw;
@@ -77,9 +78,7 @@ button {
 
 #output_txtbox_id {
     width: 30%;
-    border: 1px;
-    border-style: solid;
-    border-width: thin;
+    border: solid 2px #70C7A9;
     margin-right: 10%;
     font-size: 100%;
     padding: 2vw;
@@ -108,11 +107,11 @@ button {
 
 /*********  footer *********/
 .username_div {
-    padding: 2vh 0 2vh 0;
+    padding: 1vh 0 1vh 0;
     width: 100%;
     background-color: #606B9B;
     color: snow;
-    font-size: 80%;
+    font-size: 50%;
     text-align: center;
     flex-grow: 0;
 }

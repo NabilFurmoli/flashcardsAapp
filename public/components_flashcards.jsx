@@ -1,23 +1,60 @@
-'use strict';
 
-class LikeButton extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { liked: false };
-  }
-
-  render() {
-    if (this.state.liked) {
-      return 'You liked this.';
-    }
-
+class Logo extends React.Component {
+  
+  render () {
     return (
-      <button onClick={() => this.setState({ liked: true }) }>
-        Like
-      </button>
+      <div className="log_div">
+        <button id="logo_butt_id"> Start Review </button>
+        <h1> Lango! </h1>
+      </div>
     );
   }
 }
 
-let domContainer = document.querySelector('#like_button_container');
-ReactDOM.render(<LikeButton />, domContainer);
+
+class Text_components extends React.Component {
+  render() {
+    return (
+      <div className="txtbox_div">
+        <textarea id="input_txtbox_id"/>
+        <p id="output_txtbox_id"> Translation </p>
+      </div>
+    );
+  }
+}
+
+class Save_button extends React.Component {
+  render() {
+    return (
+      <div className="save_butt_div">
+         <button id="save_butt_id"> Save </button> 
+      </div>
+    );
+  }
+}
+
+class Footer extends React.Component {
+  render() {
+    return (
+      <div className="username_div">
+         <p> UserName </p> 
+      </div>
+    );
+  }
+}
+
+class MainPage extends React.Component {
+  render() {
+     return (
+        <div className="page_div">
+           <Logo/>
+           <Text_components/>
+           <Save_button/>
+           <Footer/>
+        </div>
+     );
+  }
+}
+
+let parent = document.getElementById("root");
+ReactDOM.render(<MainPage/>, parent)
