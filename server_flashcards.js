@@ -63,16 +63,18 @@ function reachDatabase(english_txt, other_language_txt, res) {
     let respondObject = {};
     // respondObject.status = "woohoo I saved it";
     // res.json(respondObject);
-   
- 
     // Initialize table.
     // If the table already exists, causes an error.
     // Fix the error by removing or renaming Flashcards.db
+
+    ///////////PERFORM SANITIZATION //////////////
+    // validate user input before usage
+    // check to string is not too long
     let columns = 'uinqe_IdNum, EngTxt, trans_txt, shownCount, ansCorreclyCount';
-    const cmdStr = 'INSERT INTO Flashcards ('+columns+') VALUES(' +id+", "+english_txt+", "+other_language_txt+')';
+    const cmdStr = 'INSERT INTO Flashcards ('+columns+') VALUES(' +id+', @0, @1, 0, 0)';
     id++;
     console.log(cmdStr);
-    db.run(cmdStr,tableCreationCallback);
+    db.run(cmdStr,english_txt, other_language_txt, tableCreationCallback);
 
     // Always use the callback for database operations and print out any
     // error messages you get.
@@ -86,7 +88,7 @@ function reachDatabase(english_txt, other_language_txt, res) {
         console.log("data stored");
         respondObject.status = "data stored";
         res.json(respondObject);
-        db.close();
+        //db.close();
         }
     }
 }

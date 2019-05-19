@@ -1,3 +1,8 @@
+
+
+
+/* Browser operations' source code goes here */
+
 let translated_txt = "default translation";
 // created an http request
 function createCORSRequest(method, url) {
@@ -10,7 +15,7 @@ function createCORSRequest(method, url) {
 // ajax request to translate
 function requestToTranslate() {
     let url;
-    let theWord = document.getElementById("word").value;
+    let theWord = document.getElementById("input_txtbox_id").value;
     
     url = "query?word=" + theWord;
     
@@ -29,7 +34,7 @@ function requestToTranslate() {
               let object = JSON.parse(xhr.responseText); 
               //console.log(JSON.stringify(object, undefined, 2));
 
-              var content = document.getElementById("outputGoesHere");
+              var content = document.getElementById("output_txtbox_id");
               content.textContent = object.translation;
               translated_txt = object.translation;
 		          console.log(object);
@@ -49,7 +54,7 @@ function requestToTranslate() {
 // AJAX request to save data into the database.
 function RequestToSave() {
   let url;
-  let Eng_text = document.getElementById("word").value;
+  let Eng_text = document.getElementById("input_txtbox_id").value;
   
   url = "store?english=" + Eng_text + "&" + "other_language=" + translated_txt;
   
@@ -83,7 +88,7 @@ function RequestToSave() {
 return   
 }
 
-var textInput = document.getElementById('word');
+var textInput = document.getElementById('input_txtbox_id');
 // Init a timeout variable to be used below
 var timeout = null;
 // Listen for keystroke events
