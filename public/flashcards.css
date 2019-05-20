@@ -25,7 +25,7 @@ body {
 }
 
 h1 {
-    font-size: 250%;
+    font-size: 300%;
     color: #606B9B;
 }
 
@@ -47,8 +47,8 @@ button {
 .logo_div button {
     margin-right: 25vw;
     margin-left: 8vw;
-    margin-top: 3vh;
-    height: 7vh;
+    margin-top: 2vw;
+    height: 4vw;
     background-color: #606B9B;
     padding: 0% 3vw 0% 3vw;
     border-style: none;
@@ -96,18 +96,18 @@ button {
 #save_butt_id {
     align-self: flex-end;
     background-color: #70C7A9;
-    margin-top: 10vh;
+    margin-top: 10vw;
     margin-right: 13%;
     border-style: none;
     color: snow;
     font-size: 80%;
-    padding: 1vh 2vw 1vh 2vw;
+    padding: 1vw 2vw 1vw 2vw;
 }
 
 
 /*********  footer *********/
 .username_div {
-    padding: 1vh 0 1vh 0;
+    padding: 1vw 0 1vw 0;
     width: 100%;
     background-color: #606B9B;
     color: snow;

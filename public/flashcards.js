@@ -13,17 +13,13 @@ class Logo extends React.Component {
   }}
 
 
-
-class Text_components extends React.Component {
-  render() {
-    return (
-      React.createElement("div", { className: "txtbox_div" },
-      React.createElement("textarea", { id: "input_txtbox_id", placeholder: "English" }),
-      React.createElement("p", { id: "output_txtbox_id" }, "....")));
-
-
-  }}
-
+  class Text_components extends React.Component {
+    render() {
+      return (
+        React.createElement("div", { className: "txtbox_div" },
+        React.createElement("textarea", { id: "input_txtbox_id" }),
+        React.createElement("textarea", { readOnly: true, id: "output_txtbox_id" }, " .... ")));
+    }}
 
 class Save_button extends React.Component {
   render() {
@@ -60,6 +56,8 @@ class MainPage extends React.Component {
 
 let parent = document.getElementById("root");
 ReactDOM.render(React.createElement(MainPage, null), parent);
+
+
 
 /* Browser operations' source code goes here */
 

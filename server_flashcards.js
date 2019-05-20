@@ -75,7 +75,7 @@ function reachDatabase(english_txt, other_language_txt, res) {
     //const cmdStr = 'INSERT INTO Flashcards VALUES(' +id+', '+english_txt+', '+other_language_txt+', 0, 0)';
     const dbStore = 'INSERT INTO Flashcards VALUES(1, $eng_txt, $other_lang_txt, 0, 0)';
     id++;
-    console.log(cmdStr);
+    console.log(dbStore);
     db.run(dbStore, {$eng_txt: english_txt, $other_lang_txt: other_language_txt}, tableCreationCallback);
 
     // Always use the callback for database operations and print out any
