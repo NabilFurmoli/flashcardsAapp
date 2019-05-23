@@ -12,7 +12,7 @@ let id = 1;
 // If the table already exists, causes an error.
 // Fix the error by removing or renaming Flashcards.db
 let columns = 'uinqe_IdNum, EngTxt, trans_txt, shownCount, ansCorreclyCount';
-let english_txt = "home";
+let english_txt = "nasilsin";
 let other_language_txt = "khana";
 const cmdStr = 'INSERT INTO Flashcards ('+columns+') VALUES(' +id+", "+english_txt+", "+other_language_txt+', 0, 0)';
 id++;

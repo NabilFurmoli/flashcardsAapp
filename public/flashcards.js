@@ -6,7 +6,7 @@ class Logo extends React.Component {
   render() {
     return (
       React.createElement("div", { className: "logo_div" },
-      React.createElement("button", { id: "logo_butt_id" }, " Start Review "),
+      React.createElement("button", { className: "logo_butt", id: "start_review_butt_id" }, " Start Review "),
       React.createElement("h1", null, " Lango! ")));
 
 
@@ -17,14 +17,14 @@ class Logo extends React.Component {
     render() {
       return (
         React.createElement("div", { className: "txtbox_div" },
-        React.createElement("textarea", { id: "input_txtbox_id" }),
-        React.createElement("textarea", { readOnly: true, id: "output_txtbox_id" }, " .... ")));
+        React.createElement("textarea", { className: "textbox_1", id: "input_txtbox_id" }),
+        React.createElement("p", { className: "textbox_2", id: "output_txtbox_id" }, "....")));
     }}
 
 class Save_button extends React.Component {
   render() {
     return (
-      React.createElement("div", { className: "save_butt_div" },
+      React.createElement("div", { className: "lower_butt_div" },
       React.createElement("button", { onClick: RequestToSave, id: "save_butt_id" }, " Save ")));
 
 

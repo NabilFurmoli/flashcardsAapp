@@ -30,20 +30,20 @@
         
     }
     
-    #input_txtbox_id {
+    .textbox_1 {
         margin: 0;
         width: 70%;
         height: 25vh;
         margin-bottom: 5vh;
     }
     
-    #output_txtbox_id {
+    .textbox_2 {
         margin:0;
         width: 70%;
         height: 25vh;
     }
     
-    #save_butt_id {
+    .lower_butt_div button {
         margin-top: 0;
         height: 4vh;
         font-size: 2vh;
