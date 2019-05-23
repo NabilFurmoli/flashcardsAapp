@@ -76,12 +76,12 @@ function reachDatabase(english_txt, other_language_txt, res) {
     const dbStore = 'INSERT INTO Flashcards VALUES(1, $eng_txt, $other_lang_txt, 0, 0)';
     id++;
     console.log(dbStore);
-    db.run(dbStore, {$eng_txt: english_txt, $other_lang_txt: other_language_txt}, tableCreationCallback);
+    db.run(dbStore, {$eng_txt: english_txt, $other_lang_txt: other_language_txt}, tableInsertionCallback);
 
     // Always use the callback for database operations and print out any
     // error messages you get.
     // This database stuff is hard to debug, give yourself a fighting chance.
-    function tableCreationCallback(err) {
+    function tableInsertionCallback(err) {
         if (err) {
         console.log("data storing error",err);
         respondObject.status = "data storing error";

@@ -17,7 +17,7 @@ class Text_components extends React.Component {
     return (
       <div className="txtbox_div">
         <textarea id="input_txtbox_id"/>
-        <p id="output_txtbox_id"> Translation </p>
+        <p id="output_txtbox_id"> .... </p>
       </div>
     );
   }
@@ -27,7 +27,7 @@ class Save_button extends React.Component {
   render() {
     return (
       <div className="save_butt_div">
-         <button id="save_butt_id"> Save </button> 
+         <button onClick= {RequestToSave} id="save_butt_id"> Save </button> 
       </div>
     );
   }
