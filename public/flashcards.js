@@ -17,7 +17,7 @@ class Logo extends React.Component {
     render() {
       return (
         React.createElement("div", { className: "txtbox_div" },
-        React.createElement("textarea", { className: "textbox_1", id: "input_txtbox_id" }),
+        React.createElement("textarea", { placeholder: "English", className: "textbox_1", id: "input_txtbox_id" }),
         React.createElement("p", { className: "textbox_2", id: "output_txtbox_id" }, "....")));
     }}
 
@@ -26,8 +26,6 @@ class Save_button extends React.Component {
     return (
       React.createElement("div", { className: "lower_butt_div" },
       React.createElement("button", { onClick: RequestToSave, id: "save_butt_id" }, " Save ")));
-
-
   }}
 
 
@@ -36,8 +34,6 @@ class Footer extends React.Component {
     return (
       React.createElement("div", { className: "username_div" },
       React.createElement("p", null, " UserName ")));
-
-
   }}
 
 
@@ -50,13 +46,10 @@ class MainPage extends React.Component {
       React.createElement(Save_button, null),
       React.createElement(Footer, null)));
 
-
   }}
-
 
 let parent = document.getElementById("root");
 ReactDOM.render(React.createElement(MainPage, null), parent);
-
 
 
 /* Browser operations' source code goes here */
@@ -124,7 +117,6 @@ function RequestToSave() {
           alert('CORS not supported');
           return;
         }
-
         // Load some functions into response handlers.
         //runs when respond is back.
         xhr.onload = function() {
@@ -133,7 +125,6 @@ function RequestToSave() {
             // var content = document.getElementById("outputGoesHere");
             // content.textContent = object.translation;
             console.log(object.status); // object.status shoud = "saved!"
-
             //console.log("i am done");
         };
 

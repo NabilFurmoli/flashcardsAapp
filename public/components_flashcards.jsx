@@ -1,60 +1,236 @@
-
+////// page file jsx
 class Logo extends React.Component {
-  
-  render () {
-    return (
-      <div className="log_div">
-        <button id="logo_butt_id"> Start Review </button>
-        <h1> Lango! </h1>
-      </div>
-    );
-  }
+  state = {butt_name: ""};
+   constructor (props) {
+     super(props);
+     this.state.butt_name = this.props.button_name;
+   }
+ render () {
+   return (
+     <div className="logo_div">
+       <button className="logo_butt" id="start_review_butt_id"> {this.state.butt_name} </button>
+       <h1> Lango! </h1>
+     </div>
+   );
+ }
 }
 
 
 class Text_components extends React.Component {
-  render() {
-    return (
-      <div className="txtbox_div">
-        <textarea id="input_txtbox_id"/>
-        <p id="output_txtbox_id"> .... </p>
-      </div>
-    );
-  }
+ render() {
+   return (
+     <div className="txtbox_div">
+       <textarea placeholder="English" className="textbox_1" id="input_txtbox_id"/>
+       <p className="textbox_2" id="output_txtbox_id"> .... </p>
+     </div>
+   );
+ }
 }
 
-class Save_button extends React.Component {
-  render() {
-    return (
-      <div className="save_butt_div">
-         <button onClick= {RequestToSave} id="save_butt_id"> Save </button> 
-      </div>
-    );
-  }
+class Lower_button extends React.Component {
+    state = {butt_name: "", id: ""};
+    constructor(props){
+      super(props)
+      this.state.butt_name = this.props.button_name;
+      this.state.id = this.props.id;
+    }
+ render() {
+   return (
+     <div className="lower_butt_div">
+        <button id={this.state.id+"_butt_id"}> {this.state.butt_name} </button> 
+     </div>
+   );
+ }
 }
 
 class Footer extends React.Component {
-  render() {
-    return (
-      <div className="username_div">
-         <p> UserName </p> 
-      </div>
-    );
-  }
+ render() {
+   return (
+     <div className="username_div">
+        <p> UserName </p> 
+     </div>
+   );
+ }
 }
 
 class MainPage extends React.Component {
-  render() {
-     return (
-        <div className="page_div">
-           <Logo/>
-           <Text_components/>
-           <Save_button/>
-           <Footer/>
-        </div>
-     );
-  }
+ 
+ render() {
+    return (
+       <div className="page_div">
+          <Logo button_name="Start Review"/>
+          <Text_components/>
+          <Lower_button id="save" button_name="Save"/>
+          <Footer/>
+       </div>
+    );
+ }
 }
 
 let parent = document.getElementById("root");
-ReactDOM.render(<MainPage/>, parent)
+ReactDOM.render(<MainPage />, parent)
+
+
+let translated_txt = "default translation";
+// created an http request
+function createCORSRequest(method, url) {
+ let xhr = new XMLHttpRequest();
+ xhr.open(method, url, true);  // call its open method
+ return xhr;
+}
+
+// make and http request and hundles when the respond is back.
+// ajax request to translate
+function requestToTranslate() {
+   let url;
+   let theWord = document.getElementById("input_txtbox_id").value;
+   
+   url = "query?word=" + theWord;
+   
+   //console.log(url);
+       let xhr = createCORSRequest('GET', url);
+
+         // checking if browser does CORS
+         if (!xhr) {
+           alert('CORS not supported');
+           return;
+         }
+
+         // Load some functions into response handlers.
+         //runs when respond is back.
+         xhr.onload = function() {
+             let object = JSON.parse(xhr.responseText); 
+             //console.log(JSON.stringify(object, undefined, 2));
+
+             var content = document.getElementById("output_txtbox_id");
+             content.textContent = object.translation;
+             translated_txt = object.translation;
+             console.log(object);
+ 
+             console.log("i am done");
+         };
+
+         xhr.onerror = function() {
+           alert('Woops, there was an error making the request.');
+         };
+
+         // Actually send request to server
+   xhr.send();
+ return   
+}
+
+// AJAX request to save data into the database.
+function RequestToSave() {
+ let url;
+ let Eng_text = document.getElementById("input_txtbox_id").value;
+ 
+ url = "store?english=" + Eng_text + "&" + "other_language=" + translated_txt;
+ 
+ //console.log(url);
+     let xhr = createCORSRequest('GET', url);
+
+       // checking if browser does CORS
+       if (!xhr) {
+         alert('CORS not supported');
+         return;
+       }
+       // Load some functions into response handlers.
+       //runs when respond is back.
+       xhr.onload = function() {
+           let object = JSON.parse(xhr.responseText); 
+           //console.log(JSON.stringify(object, undefined, 2));
+           // var content = document.getElementById("outputGoesHere");
+           // content.textContent = object.translation;
+           console.log(object.status); // object.status shoud = "saved!"
+           //console.log("i am done");
+       };
+
+       xhr.onerror = function() {
+         alert('Woops, there was an error to save.');
+       };
+
+       // Actually send request to server
+ xhr.send();
+return   
+}
+
+var textInput = document.getElementById('input_txtbox_id');
+// Init a timeout variable to be used below
+var timeout = null;
+// Listen for keystroke events
+textInput.onkeyup = function (e) {
+
+   // Clear the timeout if it has already been set.
+   // This will prevent the previous task from executing
+   // if it has been less than <MILLISECONDS>
+   clearTimeout(timeout);
+
+   // Make a new timeout set to go off in 800ms
+   timeout = setTimeout(requestToTranslate, 500);
+};
+
+
+/////////////////////////////////////////////////////////////////////////////
+
+/// Review page jsx
+
+
+// class Logo extends React.Component {
+ 
+//   render () {
+//     return (
+//       <div className="logo_div">
+//         <button className="logo_butt" id="add_butt_id"> Add </button>
+//         <h1> Lango! </h1>
+//       </div>
+//     );
+//   }
+// }
+
+
+// class Text_components extends React.Component {
+//   render() {
+//     return (
+//       <div className="txtbox_div">
+//         <textarea className="textbox_1" id="translation_txtbox_id"/>
+//         <p className="textbox_2" id="english_txtbox_id"> .... </p>
+//       </div>
+//     );
+//   }
+// }
+
+// class Next_button extends React.Component {
+//   render() {
+//     return (
+//       <div className="lower_butt_div">
+//          <button id="next_butt_id"> Next</button> 
+//       </div>
+//     );
+//   }
+// }
+
+// class Footer extends React.Component {
+//   render() {
+//     return (
+//       <div className="username_div">
+//          <p> UserName </p> 
+//       </div>
+//     );
+//   }
+// }
+
+// class Review_Page extends React.Component {
+//   render() {
+//      return (
+//         <div className="page_div">
+//            <Logo/>
+//            <Text_components/>
+//            <Next_button/>
+//            <Footer/>
+//         </div>
+//      );
+//   }
+// }
+
+// let parent = document.getElementById("root");
+// ReactDOM.render(<Review_Page />, parent)
