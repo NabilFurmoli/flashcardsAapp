@@ -1,4 +1,14 @@
 ////// page file jsx
+
+let translated_txt = "default translation";
+
+// created an http request
+function createCORSRequest(method, url) {
+  let xhr = new XMLHttpRequest();
+  xhr.open(method, url, true);  // call its open method
+  return xhr;
+ }
+
 class Logo extends React.Component {
   state = {butt_name: ""};
    constructor (props) {
@@ -17,72 +27,12 @@ class Logo extends React.Component {
 
 
 class Text_components extends React.Component {
- render() {
-   return (
-     <div className="txtbox_div">
-       <textarea placeholder="English" className="textbox_1" id="input_txtbox_id"/>
-       <p className="textbox_2" id="output_txtbox_id"> .... </p>
-     </div>
-   );
- }
-}
+  state = {input_txt: "", output_txt: ""};
 
-class Lower_button extends React.Component {
-    state = {butt_name: "", id: ""};
-    constructor(props){
-      super(props)
-      this.state.butt_name = this.props.button_name;
-      this.state.id = this.props.id;
-    }
- render() {
-   return (
-     <div className="lower_butt_div">
-        <button id={this.state.id+"_butt_id"}> {this.state.butt_name} </button> 
-     </div>
-   );
- }
-}
-
-class Footer extends React.Component {
- render() {
-   return (
-     <div className="username_div">
-        <p> UserName </p> 
-     </div>
-   );
- }
-}
-
-class MainPage extends React.Component {
- 
- render() {
-    return (
-       <div className="page_div">
-          <Logo button_name="Start Review"/>
-          <Text_components/>
-          <Lower_button id="save" button_name="Save"/>
-          <Footer/>
-       </div>
-    );
- }
-}
-
-let parent = document.getElementById("root");
-ReactDOM.render(<MainPage />, parent)
-
-
-let translated_txt = "default translation";
-// created an http request
-function createCORSRequest(method, url) {
- let xhr = new XMLHttpRequest();
- xhr.open(method, url, true);  // call its open method
- return xhr;
-}
-
-// make and http request and hundles when the respond is back.
-// ajax request to translate
-function requestToTranslate() {
-   let url;
+  requestToTranslate1 = (event) => {
+    
+    if (event.charCode == 13) {
+            let url;
    let theWord = document.getElementById("input_txtbox_id").value;
    
    url = "query?word=" + theWord;
@@ -116,8 +66,112 @@ function requestToTranslate() {
 
          // Actually send request to server
    xhr.send();
- return   
+      
+           this.setState({output_txt: this.inp_txt});
+        }
+   
+  }
+ render() {
+   return (
+     <div className="txtbox_div">
+       <textarea placeholder="English" className="textbox_1" id="input_txtbox_id" onKeyPress = {this.requestToTranslate1}/>
+       <p className="textbox_2" id="output_txtbox_id"> {this.state.output_txt} </p>
+     </div>
+   );
+ }
 }
+
+class Lower_button extends React.Component {
+    state = {butt_name: "", id: ""};
+    constructor(props){
+      super(props)
+      this.state.butt_name = this.props.button_name;
+      this.state.id = this.props.id;
+    }
+ render() {
+   return (
+     <div className="lower_butt_div">
+        <button id={this.state.id+"_butt_id"}> {this.state.butt_name} </button> 
+     </div>
+   );
+ }
+}
+
+class Footer extends React.Component {
+  state = {user_name: "deafault"};
+  constructor(props){
+    super(props);
+    this.state.user_name = this.props.user_name;
+  }
+ render() {
+   return (
+     <div className="username_div">
+        <p> UserName </p> 
+     </div>
+   );
+ }
+}
+
+class MainPage extends React.Component {
+ 
+ render() {
+    return (
+       <div className="page_div">
+          <Logo button_name="Start Review"/>
+          <Text_components/>
+          <Lower_button id="save" button_name="Save"/>
+          <Footer user_name="deafult: Nabil Furmoli"/>
+       </div>
+    );
+ }
+}
+
+let parent = document.getElementById("root");
+ReactDOM.render(<MainPage />, parent)
+
+
+
+
+
+// make and http request and hundles when the respond is back.
+// ajax request to translate
+// function requestToTranslate() {
+//    let url;
+//    let theWord = document.getElementById("input_txtbox_id").value;
+   
+//    url = "query?word=" + theWord;
+   
+//    //console.log(url);
+//        let xhr = createCORSRequest('GET', url);
+
+//          // checking if browser does CORS
+//          if (!xhr) {
+//            alert('CORS not supported');
+//            return;
+//          }
+
+//          // Load some functions into response handlers.
+//          //runs when respond is back.
+//          xhr.onload = function() {
+//              let object = JSON.parse(xhr.responseText); 
+//              //console.log(JSON.stringify(object, undefined, 2));
+
+//              var content = document.getElementById("output_txtbox_id");
+//              content.textContent = object.translation;
+//              translated_txt = object.translation;
+//              console.log(object);
+ 
+//              console.log("i am done");
+//          };
+
+//          xhr.onerror = function() {
+//            alert('Woops, there was an error making the request.');
+//          };
+
+//          // Actually send request to server
+//    xhr.send();
+//  return   
+// }
 
 // AJAX request to save data into the database.
 function RequestToSave() {
@@ -154,20 +208,20 @@ function RequestToSave() {
 return   
 }
 
-var textInput = document.getElementById('input_txtbox_id');
-// Init a timeout variable to be used below
-var timeout = null;
-// Listen for keystroke events
-textInput.onkeyup = function (e) {
+// var textInput = document.getElementById('input_txtbox_id');
+// // Init a timeout variable to be used below
+// var timeout = null;
+// // Listen for keystroke events
+// textInput.onkeyup = function (e) {
 
-   // Clear the timeout if it has already been set.
-   // This will prevent the previous task from executing
-   // if it has been less than <MILLISECONDS>
-   clearTimeout(timeout);
+//    // Clear the timeout if it has already been set.
+//    // This will prevent the previous task from executing
+//    // if it has been less than <MILLISECONDS>
+//    clearTimeout(timeout);
 
-   // Make a new timeout set to go off in 800ms
-   timeout = setTimeout(requestToTranslate, 500);
-};
+//    // Make a new timeout set to go off in 800ms
+//    timeout = setTimeout(requestToTranslate, 500);
+// };
 
 
 /////////////////////////////////////////////////////////////////////////////
