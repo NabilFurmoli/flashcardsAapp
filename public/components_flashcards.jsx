@@ -103,26 +103,67 @@ class Review_txt_components extends React.Component {
 /////////////////////////////////////////////
  class Pages extends React.Component {
     state = {current_page: "Main"};
+    
+     RequestToSave = () => {
+      let url;
+      let Eng_text = document.getElementById("input_txtbox_id").value;
+      
+      url = "store?english=" + Eng_text + "&" + "other_language=" + translated_txt;
+      
+      //console.log(url);
+          let xhr = createCORSRequest('GET', url);
+     
+            // checking if browser does CORS
+            if (!xhr) {
+              alert('CORS not supported');
+              return;
+            }
+            // Load some functions into response handlers.
+            //runs when respond is back.
+            xhr.onload = function() {
+                let object = JSON.parse(xhr.responseText); 
+                //console.log(JSON.stringify(object, undefined, 2));
+                // var content = document.getElementById("outputGoesHere");
+                // content.textContent = object.translation;
+                console.log(object.status); // object.status shoud = "saved!"
+                //console.log("i am done");
+            };
+     
+            xhr.onerror = function() {
+              alert('Woops, there was an error to save.');
+            };
+     
+            // Actually send request to server
+      xhr.send();
+     return   
+     }
+
   render () {
     // Main page
     if (this.state.current_page === "Main") {
       return (
+
         <div className="page_div">
+
           <div className="logo_div">
             <button className="logo_butt" id="start_review_butt_id"> "Start Review" </button>
             <h1> Lango! </h1>
           </div>
           <Text_components/>
           <div className="lower_butt_div">
-              <button id="save_butt_id" onClick= {RequestToSave}> "Save" </button> 
+              <button id="save_butt_id" onClick= {this.RequestToSave}> "Save" </button> 
           </div>
           <Footer user_name="deafult: Nabil Furmoli"/>
+
         </div>
         );
+
     } // Review page
     else if (this.state.current_page === "Review") {
       return (
+
         <div className="page_div">
+
            <div className="logo_div">
             <button className="logo_butt" id="add_butt_id"> "Add" </button>
             <h1> Lango! </h1>
@@ -132,8 +173,10 @@ class Review_txt_components extends React.Component {
               <button id="next_butt_id"> "Next" </button> 
            </div>
            <Footer user_name="deafult: Nabil Furmoli"/>
+
         </div>
      );
+
     }
   }
 }
@@ -147,36 +190,36 @@ ReactDOM.render(<Pages/>, parent)
 
 
 // AJAX request to save data into the database.
-function RequestToSave() {
- let url;
- let Eng_text = document.getElementById("input_txtbox_id").value;
+// function RequestToSave() {
+//  let url;
+//  let Eng_text = document.getElementById("input_txtbox_id").value;
  
- url = "store?english=" + Eng_text + "&" + "other_language=" + translated_txt;
+//  url = "store?english=" + Eng_text + "&" + "other_language=" + translated_txt;
  
- //console.log(url);
-     let xhr = createCORSRequest('GET', url);
+//  //console.log(url);
+//      let xhr = createCORSRequest('GET', url);
 
-       // checking if browser does CORS
-       if (!xhr) {
-         alert('CORS not supported');
-         return;
-       }
-       // Load some functions into response handlers.
-       //runs when respond is back.
-       xhr.onload = function() {
-           let object = JSON.parse(xhr.responseText); 
-           //console.log(JSON.stringify(object, undefined, 2));
-           // var content = document.getElementById("outputGoesHere");
-           // content.textContent = object.translation;
-           console.log(object.status); // object.status shoud = "saved!"
-           //console.log("i am done");
-       };
+//        // checking if browser does CORS
+//        if (!xhr) {
+//          alert('CORS not supported');
+//          return;
+//        }
+//        // Load some functions into response handlers.
+//        //runs when respond is back.
+//        xhr.onload = function() {
+//            let object = JSON.parse(xhr.responseText); 
+//            //console.log(JSON.stringify(object, undefined, 2));
+//            // var content = document.getElementById("outputGoesHere");
+//            // content.textContent = object.translation;
+//            console.log(object.status); // object.status shoud = "saved!"
+//            //console.log("i am done");
+//        };
 
-       xhr.onerror = function() {
-         alert('Woops, there was an error to save.');
-       };
+//        xhr.onerror = function() {
+//          alert('Woops, there was an error to save.');
+//        };
 
-       // Actually send request to server
- xhr.send();
-return   
-}
+//        // Actually send request to server
+//  xhr.send();
+// return   
+// }
