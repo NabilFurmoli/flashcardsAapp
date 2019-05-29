@@ -116,19 +116,19 @@ class Text_components extends React.Component {
 
 
 
-class MainPage extends React.Component {
+// class MainPage extends React.Component {
  
- render() {
-    return (
-       <div className="page_div">
-          <Logo button_name="Start Review"/>
-          <Text_components/>
-          <Lower_button id="save" button_name="Save"/>
-          <Footer user_name="deafult: Nabil Furmoli"/>
-       </div>
-    );
- }
-}
+//  render() {
+//     return (
+//        <div className="page_div">
+//           <Logo button_name="Start Review"/>
+//           <Text_components/>
+//           <Lower_button id="save" button_name="Save"/>
+//           <Footer user_name="deafult: Nabil Furmoli"/>
+//        </div>
+//     );
+//  }
+// }
 
 ///////////////// Review Page codes ////////////////////////
 ////////////////////////////////////////////////////////////
@@ -145,10 +145,36 @@ class Review_txt_components extends React.Component {
   }
 }
 
-class ReviewPage extends React.Component {
+// class ReviewPage extends React.Component {
  
-  render() {
-     return (
+//   render() {
+//      return (
+//         <div className="page_div">
+//            <Logo button_name="Add"/>
+//            <Review_txt_components/>
+//            <Lower_button id="save" button_name="Next"/>
+//            <Footer user_name="deafult: Nabil Furmoli"/>
+//         </div>
+//      );
+//   }
+//  }
+ 
+
+ class Pages extends React.Component {
+    state = {uper_butt_name: "Add"};
+  render () {
+    if (this.state.uper_butt_name === "Add") {
+      return (
+        <div className="page_div">
+          <Logo button_name="Start Review"/>
+          <Text_components/>
+          <Lower_button id="save" button_name="Save"/>
+          <Footer user_name="deafult: Nabil Furmoli"/>
+        </div>
+        );
+    } 
+    else if (this.state.uper_butt_name === "Start Review") {
+      return (
         <div className="page_div">
            <Logo button_name="Add"/>
            <Review_txt_components/>
@@ -156,25 +182,13 @@ class ReviewPage extends React.Component {
            <Footer user_name="deafult: Nabil Furmoli"/>
         </div>
      );
-  }
- }
- 
-
- class Pages extends React.Component {
-    state = {uper_butt_name: "Add"};
-  render () {
-    if (this.uper_butt_name === "Add") {
-      return (<MainPage/>);
-    } 
-    else if (this.uper_butt_name === "Start Review") {
-      return (<ReviewPage/>);
     }
   }
- }
+}
 
 
 let parent = document.getElementById("root");
-ReactDOM.render(<ReviewPage />, parent)
+ReactDOM.render(<Pages/>, parent)
 
 
 
