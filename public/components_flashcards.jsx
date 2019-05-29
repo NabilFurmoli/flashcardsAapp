@@ -17,12 +17,12 @@ constructor(props){
   this.state.user_name = this.props.user_name;
 }
 render() {
- return (
-   <div className="username_div">
-      <p> UserName </p> 
-   </div>
- );
-}
+  return (
+      <div className="username_div">
+          <p> UserName </p> 
+      </div>
+    );
+  }
 }
 
 ////////////// Main page codes /////////////////
@@ -34,40 +34,40 @@ class Text_components extends React.Component {
     
     if (event.charCode == 13) {
             let url;
-   let theWord = document.getElementById("input_txtbox_id").value;
-   
-   url = "query?word=" + theWord;
-   
-   //console.log(url);
-       let xhr = createCORSRequest('GET', url);
+            let theWord = document.getElementById("input_txtbox_id").value;
+            
+            url = "query?word=" + theWord;
+            
+            //console.log(url);
+                let xhr = createCORSRequest('GET', url);
 
-         // checking if browser does CORS
-         if (!xhr) {
-           alert('CORS not supported');
-           return;
-         }
+                  // checking if browser does CORS
+                  if (!xhr) {
+                    alert('CORS not supported');
+                    return;
+                  }
 
-         // Load some functions into response handlers.
-         //runs when respond is back.
-         xhr.onload = () => {
-             let object = JSON.parse(xhr.responseText); 
-             //console.log(JSON.stringify(object, undefined, 2));
+                  // Load some functions into response handlers.
+                  //runs when respond is back.
+                  xhr.onload = () => {
+                      let object = JSON.parse(xhr.responseText); 
+                      //console.log(JSON.stringify(object, undefined, 2));
 
-             //var content = document.getElementById("output_txtbox_id");
-             //content.textContent = object.translation;
-             translated_txt = object.translation;
-             this.setState({trans_txt: translated_txt});
-             console.log(object);
- 
-             console.log("i am done");
-         };
+                      //var content = document.getElementById("output_txtbox_id");
+                      //content.textContent = object.translation;
+                      translated_txt = object.translation;
+                      this.setState({trans_txt: translated_txt});
+                      console.log(object);
+          
+                      console.log("i am done");
+                  };
 
-         xhr.onerror = function() {
-           alert('Woops, there was an error making the request.');
-         };
+                  xhr.onerror = function() {
+                    alert('Woops, there was an error making the request.');
+                  };
 
-         // Actually send request to server
-   xhr.send();
+                  // Actually send request to server
+            xhr.send();
     
         }
    
