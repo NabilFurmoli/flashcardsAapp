@@ -10,38 +10,6 @@ function createCORSRequest(method, url) {
  }
 
  /////////  Reusable Shared components //////////////////
-class Logo extends React.Component {
-  state = {butt_name: ""};
-   constructor (props) {
-     super(props);
-     this.state.butt_name = this.props.button_name;
-   }
- render () {
-   return (
-     <div className="logo_div">
-       <button className="logo_butt" id="start_review_butt_id"> {this.state.butt_name} </button>
-       <h1> Lango! </h1>
-     </div>
-   );
- }
-}
-
-class Lower_button extends React.Component {
-  state = {butt_name: "", id: ""};
-  constructor(props){
-    super(props)
-    this.state.butt_name = this.props.button_name;
-    this.state.id = this.props.id;
-  }
-render() {
- return (
-   <div className="lower_butt_div">
-      <button id={this.state.id+"_butt_id"} onClick= {RequestToSave}> {this.state.butt_name} </button> 
-   </div>
- );
-}
-}
-
 class Footer extends React.Component {
 state = {user_name: "deafault"};
 constructor(props){
@@ -140,9 +108,14 @@ class Review_txt_components extends React.Component {
     if (this.state.current_page === "Main") {
       return (
         <div className="page_div">
-          <Logo button_name="Start Review"/>
+          <div className="logo_div">
+            <button className="logo_butt" id="start_review_butt_id"> "Start Review" </button>
+            <h1> Lango! </h1>
+          </div>
           <Text_components/>
-          <Lower_button id="save" button_name="Save" />
+          <div className="lower_butt_div">
+              <button id="save_butt_id" onClick= {RequestToSave}> "Save" </button> 
+          </div>
           <Footer user_name="deafult: Nabil Furmoli"/>
         </div>
         );
@@ -150,9 +123,14 @@ class Review_txt_components extends React.Component {
     else if (this.state.current_page === "Review") {
       return (
         <div className="page_div">
-           <Logo button_name="Add"/>
+           <div className="logo_div">
+            <button className="logo_butt" id="add_butt_id"> "Add" </button>
+            <h1> Lango! </h1>
+           </div>
            <Review_txt_components/>
-           <Lower_button id="save" button_name="Next"/>
+           <div className="lower_butt_div">
+              <button id="next_butt_id"> "Next" </button> 
+           </div>
            <Footer user_name="deafult: Nabil Furmoli"/>
         </div>
      );
