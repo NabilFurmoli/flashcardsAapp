@@ -71,9 +71,29 @@ function reachDatabase(english_txt, other_language_txt, res) {
     ///////////PERFORM SANITIZATION //////////////
     // validate user input before usage
     // check to string is not too long
+
+    // create table and buld a database if not existed.
+    //a fucntion expression
+    // function createTable () {
+    //     const cmdStr = 'CREATE TABLE Flashcards (user INT, english STRING, translation STRING, timesShown INT, timesAnsweredCorrectly INT)';
+    //     db.run(cmdStr,tableCreationCallback);
+
+    //     // Always use the callback for database operations and print out any
+    //     // error messages you get.
+    //     // This database stuff is hard to debug, give yourself a fighting chance.
+    //     function tableCreationCallback(err) {
+    //         if (err) {
+    //         console.log("Table creation error",err);
+    //         } else {
+    //         console.log("Database created");
+    //         db.close();
+    //         }
+    //     }
+    // }
+    // createTable();
     //let columns = 'uinqe_IdNum, EngTxt, trans_txt, shownCount, ansCorreclyCount';
     //const cmdStr = 'INSERT INTO Flashcards VALUES(' +id+', '+english_txt+', '+other_language_txt+', 0, 0)';
-    const dbStore = 'INSERT INTO Flashcards VALUES(1, $eng_txt, $other_lang_txt, 0, 0)';
+    const dbStore = "INSERT INTO Flashcards VALUES(1, $eng_txt, $other_lang_txt, 0, 0)";
     id++;
     console.log(dbStore);
     db.run(dbStore, {$eng_txt: english_txt, $other_lang_txt: other_language_txt}, tableInsertionCallback);

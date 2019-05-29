@@ -9,6 +9,7 @@ function createCORSRequest(method, url) {
   return xhr;
  }
 
+ /////////  Reusable Shared components //////////////////
 class Logo extends React.Component {
   state = {butt_name: ""};
    constructor (props) {
@@ -25,7 +26,39 @@ class Logo extends React.Component {
  }
 }
 
+class Lower_button extends React.Component {
+  state = {butt_name: "", id: ""};
+  constructor(props){
+    super(props)
+    this.state.butt_name = this.props.button_name;
+    this.state.id = this.props.id;
+  }
+render() {
+ return (
+   <div className="lower_butt_div">
+      <button id={this.state.id+"_butt_id"}> {this.state.butt_name} </button> 
+   </div>
+ );
+}
+}
 
+class Footer extends React.Component {
+state = {user_name: "deafault"};
+constructor(props){
+  super(props);
+  this.state.user_name = this.props.user_name;
+}
+render() {
+ return (
+   <div className="username_div">
+      <p> UserName </p> 
+   </div>
+ );
+}
+}
+
+////////////// Main page codes /////////////////
+////////////////////////////////////////////////
 class Text_components extends React.Component {
   state = {input_txt: "", output_txt: ""};
 
@@ -81,36 +114,7 @@ class Text_components extends React.Component {
  }
 }
 
-class Lower_button extends React.Component {
-    state = {butt_name: "", id: ""};
-    constructor(props){
-      super(props)
-      this.state.butt_name = this.props.button_name;
-      this.state.id = this.props.id;
-    }
- render() {
-   return (
-     <div className="lower_butt_div">
-        <button id={this.state.id+"_butt_id"}> {this.state.butt_name} </button> 
-     </div>
-   );
- }
-}
 
-class Footer extends React.Component {
-  state = {user_name: "deafault"};
-  constructor(props){
-    super(props);
-    this.state.user_name = this.props.user_name;
-  }
- render() {
-   return (
-     <div className="username_div">
-        <p> UserName </p> 
-     </div>
-   );
- }
-}
 
 class MainPage extends React.Component {
  
@@ -126,8 +130,51 @@ class MainPage extends React.Component {
  }
 }
 
+///////////////// Review Page codes ////////////////////////
+////////////////////////////////////////////////////////////
+
+class Review_txt_components extends React.Component {
+
+  render() {
+    return (
+      <div className="rev_txtbox_div">
+        <p className="rev_textbox_2" id="rev_output_txtbox_id"> </p>
+        <textarea placeholder="English" className="rev_textbox_1" id="rev_input_txtbox_id"/>
+     </div>
+    );
+  }
+}
+
+class ReviewPage extends React.Component {
+ 
+  render() {
+     return (
+        <div className="page_div">
+           <Logo button_name="Add"/>
+           <Review_txt_components/>
+           <Lower_button id="save" button_name="Next"/>
+           <Footer user_name="deafult: Nabil Furmoli"/>
+        </div>
+     );
+  }
+ }
+ 
+
+ class Pages extends React.Component {
+    state = {uper_butt_name: "Add"};
+  render () {
+    if (this.uper_butt_name === "Add") {
+      return (<MainPage/>);
+    } 
+    else if (this.uper_butt_name === "Start Review") {
+      return (<ReviewPage/>);
+    }
+  }
+ }
+
+
 let parent = document.getElementById("root");
-ReactDOM.render(<MainPage />, parent)
+ReactDOM.render(<ReviewPage />, parent)
 
 
 
