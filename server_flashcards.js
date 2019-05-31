@@ -1,5 +1,8 @@
 
 
+//client id : 260336705111-3gd5jrmbnpleva3adsu8algk2udijfq6.apps.googleusercontent.com
+//client secret: 8eRKb-V1bLAx8XBpi1ToyQ8S
+
 const express = require('express')
 const port = 50612 // you need to put your port number here
 
