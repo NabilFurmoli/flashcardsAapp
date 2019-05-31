@@ -10,10 +10,13 @@ const googleLoginData = {
 
 
 const express = require('express')
-const port = 54522 // you need to put your port number here
-
+const passport = require('passport');
+const cookieSession = require('cookie-session');
 const sqlite3 = require("sqlite3").verbose();  // use sqlite
 const fs = require("fs"); // file system
+const GoogleStrategy = require('passport-google-oauth20');
+
+const port = 54522 // you need to put your port number here
 
 const dbFileName = "Flashcards.db";
 // makes the object that represents the database in our code
