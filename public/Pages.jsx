@@ -39,7 +39,8 @@ class Review_txt_components extends React.Component {
   }
 }
  
-//////////// Pages control //////////////////
+
+//////////// Pages component //////////////////
 /////////////////////////////////////////////
  class Pages extends React.Component {
     state = {current_page: "Main"};
@@ -94,12 +95,12 @@ class Review_txt_components extends React.Component {
         <div className="page_div">
 
           <div className="logo_div">
-            <button className="logo_butt" id="start_review_butt_id" onClick= {this.changeToRevPage}> "Start Review" </button>
+            <button className="logo_butt" id="start_review_butt_id" onClick= {this.changeToRevPage}> Start Review </button>
             <h1> Lango! </h1>
           </div>
           <Text_components/>
           <div className="lower_butt_div">
-              <button id="save_butt_id" onClick= {this.RequestToSave}> "Save" </button> 
+              <button id="save_butt_id" onClick= {this.RequestToSave}> Save </button> 
           </div>
           <Footer user_name="deafult: Nabil Furmoli"/>
 
@@ -113,12 +114,12 @@ class Review_txt_components extends React.Component {
         <div className="page_div">
 
            <div className="logo_div">
-            <button className="logo_butt" id="add_butt_id" onClick={this.changeToMainPage}> "Add" </button>
+            <button className="logo_butt" id="add_butt_id" onClick={this.changeToMainPage}> Add </button>
             <h1> Lango! </h1>
            </div>
            <Review_txt_components/>
            <div className="lower_butt_div">
-              <button id="next_butt_id"> "Next" </button> 
+              <button id="next_butt_id"> Next </button> 
            </div>
            <Footer user_name="deafult: Nabil Furmoli"/>
 
