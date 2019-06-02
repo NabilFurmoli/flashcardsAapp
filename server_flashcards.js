@@ -3,9 +3,9 @@
 //client id : 260336705111-3gd5jrmbnpleva3adsu8algk2udijfq6.apps.googleusercontent.com
 //client secret: 8eRKb-V1bLAx8XBpi1ToyQ8S
 const googleLoginData = {
-    clientID: '472036695689-s9n5kubr2kuqftbvk0ujl67i324njo3p.apps.googleusercontent.com',
-    clientSecret: 'W-edC3ifbkX9nxSDoNheWPca',
-    callbackURL: '/auth/redirect'
+    clientID: '696152743305-sojs7aqvlas0i0rec4kn7o7rpfbks6sf.apps.googleusercontent.com',
+    clientSecret: '8I9sGihgElpHSVCZh7ll4fHD',
+    callbackURL: '/auth/accepted'
 };
 
 
@@ -27,7 +27,7 @@ const db = new sqlite3.Database(dbFileName);  // object, not database.
 /////////////////////////////////////////////////////////////////////////////
 
 function printURL (req, res, next) {
-    console.log(req.url);
+    console.log("\n" + req.url + "\n");
     next();
 }
 
@@ -35,8 +35,8 @@ function printURL (req, res, next) {
 // personal data
 function isAuthenticated(req, res, next) {
     if (req.user) {
-	console.log("Req.session:",req.session);
-	console.log("Req.user:",req.user);
+	//console.log("Req.session:",req.session);
+	//console.log("Req.user:",req.user);
 	next();
     } else {
 	res.redirect('/login.html');  // send response telling
@@ -58,17 +58,42 @@ function fileNotFound(req, res) {
 // The callback "done" at the end of each one resumes Passport's
 // internal process. 
 
+const userInsert = "INSERT INTO Users VALUES($id, $first_name, $last_name)";
+
 // function called during login, the second time passport.authenticate
 // is called (in /auth/redirect/),
 // once we actually have the profile data from Google. 
 function gotProfile(accessToken, refreshToken, profile, done) {
+    
+    respondObject = {};    
+
+    function tableInsertionCallback(err) {
+        if (err) {
+	    console.log("error");
+        } else {
+	    console.log("inserted user");
+        }
+    }
+
     console.log("Google profile",profile);
+	//console.log(profile.given_name);
+	//console.log(profile.family_name);
     // here is a good place to check if user is in DB,
     // and to store him in DB if not already there. 
     // Second arg to "done" will be passed into serializeUser,
     // should be key to get user out of database.
+    let sql = `SELECT google_ID id, first_name name FROM Users WHERE google_ID = ?`;
+    db.get(sql, [profile.id], (err, row) => {
+	if (err) {
+	    return console.error(err.message);
+	}
 
-    let dbRowID = 1;  // temporary! Should be the real unique
+	return row
+	    ? console.log(row.id, row.name)
+	    : db.run(userInsert, {$id: profile.id, $first_name: profile.name.givenName, $last_name: profile.name.familyName}, tableInsertionCallback);
+    });
+
+    let dbRowID = profile.id;  // temporary! Should be the real unique
     // key for db Row for this user in DB table.
     // Note: cannot be zero, has to be something that evaluates to
     // True.  
@@ -80,7 +105,7 @@ function gotProfile(accessToken, refreshToken, profile, done) {
 // The second operand of "done" becomes the input to deserializeUser
 // on every subsequent HTTP request with this session's cookie. 
 passport.serializeUser((dbRowID, done) => {
-    console.log("SerializeUser. Input is",dbRowID);
+//    console.log("SerializeUser. Input is",dbRowID);
     done(null, dbRowID);
 });
 
@@ -90,11 +115,11 @@ passport.serializeUser((dbRowID, done) => {
 // Whatever we pass in the "done" callback becomes req.user
 // and can be used by subsequent middleware.
 passport.deserializeUser((dbRowID, done) => {
-    console.log("deserializeUser. Input is:", dbRowID);
+//    console.log("deserializeUser. Input is:", dbRowID);
     // here is a good place to look up user data in database using
     // dbRowID. Put whatever you want into an object. It ends up
     // as the property "user" of the "req" object. 
-    let userData = {userData: "data from db row goes here"};
+    let userData = {id: dbRowID};
     done(null, userData);
 });
 
@@ -103,6 +128,7 @@ passport.deserializeUser((dbRowID, done) => {
 ////////////////////////////////////////////////////////////////////////////////
 // this fucntion is triggered if the request is not static.
 function queryHandler(req, res, next) {
+	console.log("query found");
     let url = req.url;
     console.log(url);
     //let isQuery = url.substring(1, 6);
@@ -141,11 +167,11 @@ function storeHandler(req, res, next) {
 }
 
 
-let id = 1;
+
 function reachDatabase(english_txt, other_language_txt, res) {
     let respondObject = {};
     const dbStore = "INSERT INTO Flashcards VALUES(1, $eng_txt, $other_lang_txt, 0, 0)";
-    id++;
+    
     console.log(dbStore);
     db.run(dbStore, {$eng_txt: english_txt, $other_lang_txt: other_language_txt}, tableInsertionCallback);
 
@@ -259,7 +285,7 @@ app.get('/auth/google',
     passport.authenticate('google',{ scope: ['profile'] }) );
     
 // When google redirects back    
-app.get('/auth/redirect',
+app.get('/auth/accepted',
 	// for educational purposes
 	function (req, res, next) {
 	    console.log("at auth/redirect");
@@ -274,8 +300,8 @@ app.get('/auth/redirect',
 	// will come back here to send back the response
 	// ...with a cookie in it for the Browser! 
 	function (req, res) {
-	    console.log('Logged in and using cookies!')
-	    res.redirect('/user/flashcards.html');
+	    console.log('Logged in and using cookies!'); 
+	    res.redirect('/User/flashcards.html');
     });
 
 // static files in /user are only available after login
@@ -290,8 +316,39 @@ app.get('/user/*',
 
 //app.use(express.static('public'));  // can I find a static file? 
 // queries and stores should only be sent if the user is authenticated
-app.get('/query', isAuthenticated, queryHandler );   // if not, is it a valid query?
-app.get('/store', isAuthenticated, storeHandler );
+app.get('/User/query', queryHandler );   // if not, is it a valid query?
+app.get('/User/store', storeHandler );
+app.get('/User/hasCards', 
+	function(req, res) {
+		const checkForCards = `SELECT 	eng_txt english,
+						trans_txt translation,
+						shownCount shownCount,
+						ansCorrectlyCount correctCount
+					FROM Flashcards 
+					WHERE unique_IdNum = ?`;
+		let resCards = {};
+		resCards.Cards = new Array();
+		let count = 0;
+		db.all(checkForCards, [req.user.id], (err, rows) => {
+		    if (err) {
+		        return console.error(err.message);
+		    }
+		    //console.log(`${row.english}, ${row.translation}, ${row.shownCount}, ${row.correctCount}`);
+		    //resCards.Cards[1] = {eng_txt: row.english, trans_txt: row.translation, shownCount: row.shownCount, ansCorrectlyCount: row.correctCount};
+		    //count++;
+		    
+		    rows.forEach((row) => {
+			resCards.Cards[count] = row;
+			count++;
+		    });
+		    resCards.Count = count;
+		    res.json(resCards);
+		});
+		//resCards.Count = count;
+
+		//console.log(JSON.stringify(resCards, undefined, 2));
+		//res.json(resCards);
+	});
 
 // For logging out
 app.get('/logout', function(req, res){
