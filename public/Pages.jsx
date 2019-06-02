@@ -43,14 +43,14 @@ class Review_txt_components extends React.Component {
 //////////// Pages component //////////////////
 /////////////////////////////////////////////
  class Pages extends React.Component {
-    state = {current_page: "Main"};
+    state = {current_page: "creation"};
 
     changeToRevPage = () => {
       this.setState({current_page: "Review"});
     }
 
-    changeToMainPage = () => {
-      this.setState({current_page: "Main"});
+    changeToCreationPage = () => {
+      this.setState({current_page: "creation"});
     }
     
      RequestToSave = () => {
@@ -89,7 +89,7 @@ class Review_txt_components extends React.Component {
 
   render () {
     // Main page
-    if (this.state.current_page === "Main") {
+    if (this.state.current_page === "creation") {
       return (
 
         <div className="page_div">
@@ -114,7 +114,7 @@ class Review_txt_components extends React.Component {
         <div className="page_div">
 
            <div className="logo_div">
-            <button className="logo_butt" id="add_butt_id" onClick={this.changeToMainPage}> Add </button>
+            <button className="logo_butt" id="add_butt_id" onClick={this.changeToCreationPage}> Add </button>
             <h1> Lango! </h1>
            </div>
            <Review_txt_components/>

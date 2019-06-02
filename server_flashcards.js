@@ -54,7 +54,8 @@ app.get('/auth/google',
 app.get('/auth/redirect',
 	// for educational purposes
 	function (req, res, next) {
-	    console.log("at auth/redirect");
+        console.log("at auth/redirect");
+        console.log(res.user);
 	    next();
 	},
 	// This will issue Server's own HTTPS request to Google
@@ -67,8 +68,10 @@ app.get('/auth/redirect',
 	// ...with a cookie in it for the Browser! 
 	function (req, res) {
 	    console.log('Logged in and using cookies!')
-	    res.redirect('/user/flashcards.html');
-	});
+	    res.redirect('/auth/accept');
+    });
+    
+    app.get('/auth/accept', page_redirection_checking);
 
     app.get('/user/*',
 	isAuthenticated, // only pass on to following function if
@@ -187,10 +190,117 @@ passport.deserializeUser((dbRowID, done) => {
     // dbRowID. Put whatever you want into an object. It ends up
     // as the property "user" of the "req" object. 
     let userData = {id: dbRowID };
+    console.log(userData);
     done(null, userData);
 });
 
 ///////////////////////end of middleware functions//////////////
+
+
+function page_redirection_checking(res, req, next) {
+
+    console.log(req.user);
+    //check if user has a flashcard in database, if not
+    //redirect to creation page, else redirect to review page.
+    const dbCheck = "SELECT Google_id FROM flashcards WHERE Google_id = "+req.user.id+" LIMIT 1";
+    console.log("page_redirection_checking: cheking if user exist");
+    console.log(dbCheck);
+    // to accces the user data user req.user. ...
+    db.get(dbCheck, dataCallback);
+
+    // Always use the callback for database operations and print out any
+    // error messages you get.
+    // This database stuff is hard to debug, give yourself a fighting chance.
+    function dataCallback(err, dbData) {
+        let data_object= {};
+        if (err) {
+            console.log("page_redirection_checking: data Selection error",err);
+        } else {
+            console.log("page_redirection_checking: data selection success");
+            
+            if(dbData == undefined) {
+                res.redirect('/user/flashcards.html');
+                //redirect to creation page.
+                // data_object = {page: "creation"};
+                // res.json(data_object)
+            }
+        }
+    }
+
+
+}
+
+
+
+function InsertNewUser(profile) {
+
+    const dbinsert = "INSERT INTO user_data VALUES($user_id, $f_name, $g_name)";
+    
+    console.log(dbinsert);
+    // to accces the user data user req.user. ...
+    db.run(dbinsert, {$user_id: profile.id ,$f_name: profile.name.familyName, $g_name: profile.name.givenName}, tableInsertionCallback);
+
+    // Always use the callback for database operations and print out any
+    // error messages you get.
+    // This database stuff is hard to debug, give yourself a fighting chance.
+    function tableInsertionCallback(err) {
+        if (err) {
+        console.log("userdb; new user insertion error",err);
+        
+        } else {
+        console.log("userdb; new user insertion success");
+    
+        }
+    }
+}
+
+
+
+
+
+function storeHundler(req, res, next) {
+    let url = req.url;
+    console.log(url);
+     // reach database to save information
+        let qObj = req.query;
+        console.log(qObj);
+        if (qObj.english != undefined && qObj.other_language != undefined) {
+            
+            console.log("+++++before ging to database");// go to the database and save the information then send the result back to the browser
+            reachDatabase(qObj.english, qObj.other_language,req, res);
+        }
+        else {
+            next();
+        }
+    
+}
+
+
+function reachDatabase(english_txt, other_language_txt,req, res) {
+    let respondObject = {};
+    const dbStore = "INSERT INTO Flashcards VALUES($user_id, $eng_txt, $other_lang_txt, 0, 0)";
+    
+    console.log(dbStore);
+    // to accces the user data user req.user. ...
+    db.run(dbStore, {$user_id: req.user.id ,$eng_txt: english_txt, $other_lang_txt: other_language_txt}, tableInsertionCallback);
+
+    // Always use the callback for database operations and print out any
+    // error messages you get.
+    // This database stuff is hard to debug, give yourself a fighting chance.
+    function tableInsertionCallback(err) {
+        if (err) {
+        console.log("data storing error",err);
+        respondObject.status = "data storing error";
+        res.json(respondObject);
+        } else {
+        console.log("data stored");
+        respondObject.status = "data stored";
+        res.json(respondObject);
+        //db.close();
+        }
+    }
+}
+
 
 // this fucntion is triggered if the request is not static.
 function queryHandler(req, res, next) {
@@ -213,25 +323,6 @@ function queryHandler(req, res, next) {
     
     
 }
-
-
-function storeHundler(req, res, next) {
-    let url = req.url;
-    console.log(url);
-     // reach database to save information
-        let qObj = req.query;
-        console.log(qObj);
-        if (qObj.english != undefined && qObj.other_language != undefined) {
-            
-            console.log("+++++before ging to database");// go to the database and save the information then send the result back to the browser
-            reachDatabase(qObj.english, qObj.other_language,req, res);
-        }
-        else {
-            next();
-        }
-    
-}
-
 
 
 //this fucntion returns a string in other language.
@@ -300,78 +391,6 @@ function reachGoogleApi(eng_text, res) {
 
 
 //let id = 1;
-function reachDatabase(english_txt, other_language_txt,req, res) {
-    let respondObject = {};
-    const dbStore = "INSERT INTO Flashcards VALUES($user_id, $eng_txt, $other_lang_txt, 0, 0)";
-    
-    console.log(dbStore);
-    // to accces the user data user req.user. ...
-    db.run(dbStore, {$user_id: req.user.id ,$eng_txt: english_txt, $other_lang_txt: other_language_txt}, tableInsertionCallback);
-
-    // Always use the callback for database operations and print out any
-    // error messages you get.
-    // This database stuff is hard to debug, give yourself a fighting chance.
-    function tableInsertionCallback(err) {
-        if (err) {
-        console.log("data storing error",err);
-        respondObject.status = "data storing error";
-        res.json(respondObject);
-        } else {
-        console.log("data stored");
-        respondObject.status = "data stored";
-        res.json(respondObject);
-        //db.close();
-        }
-    }
-}
-
-// function userDb_checkUp(profile) {
-//     let respondObject = {};
-//     const dbCheck = "SELECT Google_id FROM user_data WHERE Google_id = "+profile.id+"";
-//     console.log("cheking if user exist");
-//     console.log(dbCheck);
-//     // to accces the user data user req.user. ...
-//     db.get(dbCheck, dataCallback);
-
-//     // Always use the callback for database operations and print out any
-//     // error messages you get.
-//     // This database stuff is hard to debug, give yourself a fighting chance.
-//     function dataCallback(err, dbData) {
-//         if (err) {
-//             console.log("data Selection error",err);
-//         } else {
-//             console.log("data selection success");
-            
-//             if(dbData == undefined) {
-//                 InsertNewUser(profile);
-//                 return;
-//             }
-//         }
-//     }
-// }
-
-
-function InsertNewUser(profile) {
-
-    const dbinsert = "INSERT INTO user_data VALUES($user_id, $f_name, $g_name)";
-    
-    console.log(dbinsert);
-    // to accces the user data user req.user. ...
-    db.run(dbinsert, {$user_id: profile.id ,$f_name: profile.name.familyName, $g_name: profile.name.givenName}, tableInsertionCallback);
-
-    // Always use the callback for database operations and print out any
-    // error messages you get.
-    // This database stuff is hard to debug, give yourself a fighting chance.
-    function tableInsertionCallback(err) {
-        if (err) {
-        console.log("userdb; new user insertion error",err);
-        
-        } else {
-        console.log("userdb; new user insertion success");
-    
-        }
-    }
-}
 
 // function removeFrom_usertabele(req) {
 //     const dbdelete = "DELETE FROM user_data WHERE Google_id = "+req.user.id +" ";
