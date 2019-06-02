@@ -81,7 +81,7 @@ app.get('/user/query', queryHandler );   // if not, is it a valid query?
 app.get('/user/store', storeHundler );
 // For logging out
 app.get('/logout', function(req, res){
-    removeFrom_usertabele(req);
+    //removeFrom_usertabele(req);
     req.logout();
     res.redirect('/login.html');
 });
@@ -136,15 +136,36 @@ function gotProfile(accessToken, refreshToken, profile, done) {
     console.log("Google profile",profile);
     // here is a good place to check if user is in DB,
     // and to store him in DB if not already there.
-    userDb_checkUp(profile);
+    const dbCheck = "SELECT Google_id FROM user_data WHERE Google_id = "+profile.id+"";
+    console.log("cheking if user exist");
+    console.log(dbCheck);
+    // to accces the user data user req.user. ...
+    db.get(dbCheck, dataCallback);
+
+    // Always use the callback for database operations and print out any
+    // error messages you get.
+    // This database stuff is hard to debug, give yourself a fighting chance.
+    function dataCallback(err, dbData) {
+        if (err) {
+            console.log("data Selection error",err);
+        } else {
+            console.log("data selection success");
+            
+            if(dbData == undefined) {
+                InsertNewUser(profile);
+            }
+        }
+    }
    
     // Second arg to "done" will be passed into serializeUser,
     // should be key to get user out of database.
-    let dbRowID = profile.id;  // temporary! Should be the real unique
+    // temporary! Should be the real unique
     // key for db Row for this user in DB table.
     // Note: cannot be zero, has to be something that evaluates to
     // True.  
+    let dbRowID = profile.id;
     done(null, dbRowID); 
+    
 }
 
 // Part of Server's sesssion set-up.  
@@ -304,30 +325,30 @@ function reachDatabase(english_txt, other_language_txt,req, res) {
     }
 }
 
-function userDb_checkUp(profile) {
-    let respondObject = {};
-    const dbCheck = "SELECT Google_id FROM user_data WHERE Google_id = "+profile.id+"";
-    console.log("cheking if user exist");
-    console.log(dbCheck);
-    // to accces the user data user req.user. ...
-    db.get(dbCheck, dataCallback);
+// function userDb_checkUp(profile) {
+//     let respondObject = {};
+//     const dbCheck = "SELECT Google_id FROM user_data WHERE Google_id = "+profile.id+"";
+//     console.log("cheking if user exist");
+//     console.log(dbCheck);
+//     // to accces the user data user req.user. ...
+//     db.get(dbCheck, dataCallback);
 
-    // Always use the callback for database operations and print out any
-    // error messages you get.
-    // This database stuff is hard to debug, give yourself a fighting chance.
-    function dataCallback(err, dbData) {
-        if (err) {
-            console.log("data Selection error",err);
-        } else {
-            console.log("data selection success");
+//     // Always use the callback for database operations and print out any
+//     // error messages you get.
+//     // This database stuff is hard to debug, give yourself a fighting chance.
+//     function dataCallback(err, dbData) {
+//         if (err) {
+//             console.log("data Selection error",err);
+//         } else {
+//             console.log("data selection success");
             
-            if(dbData == undefined) {
-                InsertNewUser(profile);
-                return;
-            }
-        }
-    }
-}
+//             if(dbData == undefined) {
+//                 InsertNewUser(profile);
+//                 return;
+//             }
+//         }
+//     }
+// }
 
 
 function InsertNewUser(profile) {
@@ -352,26 +373,26 @@ function InsertNewUser(profile) {
     }
 }
 
-function removeFrom_usertabele(req) {
-    const dbdelete = "DELETE FROM user_data WHERE Google_id = "+req.user.id +" ";
+// function removeFrom_usertabele(req) {
+//     const dbdelete = "DELETE FROM user_data WHERE Google_id = "+req.user.id +" ";
     
-    console.log(dbdelete);
-    // to accces the user data user req.user. ...
-    db.run(dbdelete, tableDeleteCallback);
+//     console.log(dbdelete);
+//     // to accces the user data user req.user. ...
+//     db.run(dbdelete, tableDeleteCallback);
 
-    // Always use the callback for database operations and print out any
-    // error messages you get.
-    // This database stuff is hard to debug, give yourself a fighting chance.
-    function tableDeleteCallback(err) {
-        if (err) {
-        console.log("userdb; user deletion error",err);
+//     // Always use the callback for database operations and print out any
+//     // error messages you get.
+//     // This database stuff is hard to debug, give yourself a fighting chance.
+//     function tableDeleteCallback(err) {
+//         if (err) {
+//         console.log("userdb; user deletion error",err);
         
-        } else {
-        console.log("userdb; user deletion success");
+//         } else {
+//         console.log("userdb; user deletion success");
     
-        }
-    }
-}
+//         }
+//     }
+// }
 
 function fileNotFound(req, res) {
     let url = req.url;
