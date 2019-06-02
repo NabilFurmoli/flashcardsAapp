@@ -20,7 +20,7 @@ const db = new sqlite3.Database(dbFileName);  // object, not database.
 const googleLoginData = {
     clientID: '260336705111-3gd5jrmbnpleva3adsu8algk2udijfq6.apps.googleusercontent.com',
     clientSecret: '8eRKb-V1bLAx8XBpi1ToyQ8S',
-    callbackURL: '/auth/redirect'
+    callbackURL: '/auth/accepted'
 };
 
 
@@ -51,10 +51,10 @@ app.get('/auth/google',
 
 // Google redirects here after user successfully logs in
 // This route has three handler functions, one run after the other. 
-app.get('/auth/redirect',
+app.get('/auth/accepted',
 	// for educational purposes
 	function (req, res, next) {
-        console.log("at auth/redirect");
+        console.log("at auth/accepted");
         console.log(res.user);
 	    next();
 	},
@@ -66,12 +66,12 @@ app.get('/auth/redirect',
 	// set up the cookie, call serialize, whose "done" 
 	// will come back here to send back the response
 	// ...with a cookie in it for the Browser! 
-	function (req, res) {
+	function (req, res, next) {
 	    console.log('Logged in and using cookies!')
-	    res.redirect('/auth/accept');
+	    res.redirect('/user/flashcards.html');
     });
     
-    app.get('/auth/accept', page_redirection_checking);
+    //app.get('/auth/accept', page_redirection_checking);
 
     app.get('/user/*',
 	isAuthenticated, // only pass on to following function if
@@ -82,6 +82,7 @@ app.get('/auth/redirect',
 
 app.get('/user/query', queryHandler );   // if not, is it a valid query?
 app.get('/user/store', storeHundler );
+app.get('/user/page', page_redirection_checking );
 // For logging out
 app.get('/logout', function(req, res){
     //removeFrom_usertabele(req);
@@ -219,11 +220,13 @@ function page_redirection_checking(res, req, next) {
             console.log("page_redirection_checking: data selection success");
             
             if(dbData == undefined) {
-                res.redirect('/user/flashcards.html');
                 //redirect to creation page.
-                // data_object = {page: "creation"};
-                // res.json(data_object)
-            }
+                data_object = {page: "creation"};
+                res.json(data_object)
+            }else [
+                data_object = {page: "Review"};
+                res.json(data_object)
+            ]
         }
     }
 

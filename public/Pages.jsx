@@ -52,6 +52,39 @@ class Review_txt_components extends React.Component {
     changeToCreationPage = () => {
       this.setState({current_page: "creation"});
     }
+
+    componentDidMount() {
+      let url = "/user/page";
+      let xhr = createCORSRequest('GET', url);
+     
+            // checking if browser does CORS
+            if (!xhr) {
+              alert('CORS not supported');
+              return;
+            }
+            // Load some functions into response handlers.
+            //runs when respond is back.
+            xhr.onload = () => {
+                let object = JSON.parse(xhr.responseText); 
+               
+                console.log(object.page);
+                if (object.page == "creation") {
+                  this.setState({current_page: object.page});
+                  
+                } else {
+                  this.setState({current_page: object.page});
+                }
+                //console.log("i am done");
+            };
+     
+            xhr.onerror = function() {
+              alert('Woops, there was an error to save.');
+            };
+     
+            // Actually send request to server
+            console.log("before sending user/page req");
+      xhr.send();
+    }
     
      RequestToSave = () => {
       let url;
