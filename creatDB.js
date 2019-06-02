@@ -11,7 +11,7 @@ const db = new sqlite3.Database(dbFileName);  // object, not database.
 // Initialize table.
 // If the table already exists, causes an error.
 // Fix the error by removing or renaming Flashcards.db
-const cmdStr = 'CREATE TABLE Flashcards (uinqe_IdNum INT, EngTxt TEXT, trans_txt TEXT, shownCount INT, ansCorreclyCount INT)';
+const cmdStr = 'CREATE TABLE Flashcards (Google_id INT, EngTxt TEXT, trans_txt TEXT, shownCount INT, ansCorreclyCount INT)';
 
 db.run(cmdStr,tableCreationCallback);
 

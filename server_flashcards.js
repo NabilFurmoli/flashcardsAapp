@@ -81,12 +81,12 @@ app.get('/user/query', queryHandler );   // if not, is it a valid query?
 app.get('/user/store', storeHundler );
 // For logging out
 app.get('/logout', function(req, res){
+    removeFrom_usertabele(req);
     req.logout();
     res.redirect('/login.html');
 });
 app.use( fileNotFound );            // otherwise not found
 app.listen(port, function (){console.log('Listening...');} )
-
 
 
 /////////////////Function calls implementations are below///////////////
@@ -130,18 +130,20 @@ function fileNotFound(req, res) {
 // function called during login, the second time passport.authenticate
 // is called (in /auth/redirect/),
 // once we actually have the profile data from Google. 
+
+
 function gotProfile(accessToken, refreshToken, profile, done) {
     console.log("Google profile",profile);
     // here is a good place to check if user is in DB,
-    // and to store him in DB if not already there. 
+    // and to store him in DB if not already there.
+    userDb_checkUp(profile);
+   
     // Second arg to "done" will be passed into serializeUser,
     // should be key to get user out of database.
-
-    let dbRowID = 1;  // temporary! Should be the real unique
+    let dbRowID = profile.id;  // temporary! Should be the real unique
     // key for db Row for this user in DB table.
     // Note: cannot be zero, has to be something that evaluates to
     // True.  
-
     done(null, dbRowID); 
 }
 
@@ -163,12 +165,11 @@ passport.deserializeUser((dbRowID, done) => {
     // here is a good place to look up user data in database using
     // dbRowID. Put whatever you want into an object. It ends up
     // as the property "user" of the "req" object. 
-    let userData = {userData: "data from db row goes here"};
+    let userData = {id: dbRowID };
     done(null, userData);
 });
 
 ///////////////////////end of middleware functions//////////////
-
 
 // this fucntion is triggered if the request is not static.
 function queryHandler(req, res, next) {
@@ -202,7 +203,7 @@ function storeHundler(req, res, next) {
         if (qObj.english != undefined && qObj.other_language != undefined) {
             
             console.log("+++++before ging to database");// go to the database and save the information then send the result back to the browser
-            reachDatabase(qObj.english, qObj.other_language, res);
+            reachDatabase(qObj.english, qObj.other_language,req, res);
         }
         else {
             next();
@@ -278,12 +279,13 @@ function reachGoogleApi(eng_text, res) {
 
 
 //let id = 1;
-function reachDatabase(english_txt, other_language_txt, res) {
+function reachDatabase(english_txt, other_language_txt,req, res) {
     let respondObject = {};
-    const dbStore = "INSERT INTO Flashcards VALUES(1, $eng_txt, $other_lang_txt, 0, 0)";
-    // id++;
+    const dbStore = "INSERT INTO Flashcards VALUES($user_id, $eng_txt, $other_lang_txt, 0, 0)";
+    
     console.log(dbStore);
-    db.run(dbStore, {$eng_txt: english_txt, $other_lang_txt: other_language_txt}, tableInsertionCallback);
+    // to accces the user data user req.user. ...
+    db.run(dbStore, {$user_id: req.user.id ,$eng_txt: english_txt, $other_lang_txt: other_language_txt}, tableInsertionCallback);
 
     // Always use the callback for database operations and print out any
     // error messages you get.
@@ -302,6 +304,74 @@ function reachDatabase(english_txt, other_language_txt, res) {
     }
 }
 
+function userDb_checkUp(profile) {
+    let respondObject = {};
+    const dbCheck = "SELECT Google_id FROM user_data WHERE Google_id = "+profile.id+"";
+    console.log("cheking if user exist");
+    console.log(dbCheck);
+    // to accces the user data user req.user. ...
+    db.get(dbCheck, dataCallback);
+
+    // Always use the callback for database operations and print out any
+    // error messages you get.
+    // This database stuff is hard to debug, give yourself a fighting chance.
+    function dataCallback(err, dbData) {
+        if (err) {
+            console.log("data Selection error",err);
+        } else {
+            console.log("data selection success");
+            
+            if(dbData == undefined) {
+                InsertNewUser(profile);
+                return;
+            }
+        }
+    }
+}
+
+
+function InsertNewUser(profile) {
+
+    const dbinsert = "INSERT INTO user_data VALUES($user_id, $f_name, $g_name)";
+    
+    console.log(dbinsert);
+    // to accces the user data user req.user. ...
+    db.run(dbinsert, {$user_id: profile.id ,$f_name: profile.name.familyName, $g_name: profile.name.givenName}, tableInsertionCallback);
+
+    // Always use the callback for database operations and print out any
+    // error messages you get.
+    // This database stuff is hard to debug, give yourself a fighting chance.
+    function tableInsertionCallback(err) {
+        if (err) {
+        console.log("userdb; new user insertion error",err);
+        
+        } else {
+        console.log("userdb; new user insertion success");
+    
+        }
+    }
+}
+
+function removeFrom_usertabele(req) {
+    const dbdelete = "DELETE FROM user_data WHERE Google_id = "+req.user.id +" ";
+    
+    console.log(dbdelete);
+    // to accces the user data user req.user. ...
+    db.run(dbdelete, tableDeleteCallback);
+
+    // Always use the callback for database operations and print out any
+    // error messages you get.
+    // This database stuff is hard to debug, give yourself a fighting chance.
+    function tableDeleteCallback(err) {
+        if (err) {
+        console.log("userdb; user deletion error",err);
+        
+        } else {
+        console.log("userdb; user deletion success");
+    
+        }
+    }
+}
 
 function fileNotFound(req, res) {
     let url = req.url;
