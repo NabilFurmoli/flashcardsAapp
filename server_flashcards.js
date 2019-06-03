@@ -204,11 +204,11 @@ function page_redirection_checking(req, res, next) {
     console.log(req.user);
     //check if user has a flashcard in database, if not
     //redirect to creation page, else redirect to review page.
-    const dbCheck = "SELECT Google_id FROM flashcards WHERE Google_id = "+req.user.id+" LIMIT 1";
+    const dbCheck = "SELECT * FROM flashcards WHERE Google_id = "+req.user.id+" ";
     console.log("page_redirection_checking: cheking if user exist");
     console.log(dbCheck);
     // to accces the user data user req.user. ...
-    db.get(dbCheck, dataCallback);
+    db.all(dbCheck, dataCallback);
 
     // Always use the callback for database operations and print out any
     // error messages you get.
@@ -220,13 +220,14 @@ function page_redirection_checking(req, res, next) {
             next();
         } else {
             console.log("page_redirection_checking: data selection success");
-            
+            console.log("displaying dpData");
+            console.log(dbData);
             if(dbData == undefined) {
                 //redirect to creation page.
-                data_object = {page: "creation"};
+                data_object = {page: "creation", cardsArray: dbData};
                 res.json(data_object);
             }else {
-                data_object = {page: "Review"};
+                data_object = {page: "Review", cardsArray: dbData};
                 res.json(data_object);
             }
         }

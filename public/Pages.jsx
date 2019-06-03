@@ -29,9 +29,9 @@ componentDidMount = () => {
             xhr.onload = () => {
                 let object = JSON.parse(xhr.responseText); 
                
-                console.log(object.user_nm);
+                console.log(object.name);
               
-                this.setState({user_name: object.user_nm});
+                this.setState({user_name: object.name});
                
                 //console.log("i am done");
             };
@@ -97,7 +97,7 @@ class Review_txt_components extends React.Component {
             xhr.onload = () => {
                 let object = JSON.parse(xhr.responseText); 
                
-                console.log(object.page);
+                console.log(object);
                 if (object.page == "creation") {
                   this.setState({current_page: object.page});
                   

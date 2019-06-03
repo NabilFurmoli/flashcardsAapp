@@ -51,6 +51,7 @@ export class Text_components extends React.Component {
                     };
   
                     // Actually send request to server
+                    
               xhr.send();
           }
      
