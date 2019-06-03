@@ -72,7 +72,6 @@ app.get('/auth/accepted',
     });
     
     //app.get('/auth/accept', page_redirection_checking);
-
     app.get('/user/*',
 	isAuthenticated, // only pass on to following function if
 	// user is logged in 
@@ -83,6 +82,7 @@ app.get('/auth/accepted',
 app.get('/user/query', queryHandler );   // if not, is it a valid query?
 app.get('/user/store', storeHundler );
 app.get('/user/page', page_redirection_checking );
+app.get('/user/userName', fetch_userNmae );
 // For logging out
 app.get('/logout', function(req, res){
     //removeFrom_usertabele(req);
@@ -167,17 +167,17 @@ function gotProfile(accessToken, refreshToken, profile, done) {
     // key for db Row for this user in DB table.
     // Note: cannot be zero, has to be something that evaluates to
     // True.  
-    let dbRowID = profile.id;
-    done(null, dbRowID); 
+    let dbRowData = {id: profile.id, name: profile.name.givenName};
+    done(null, dbRowData); 
     
 }
 
 // Part of Server's sesssion set-up.  
 // The second operand of "done" becomes the input to deserializeUser
 // on every subsequent HTTP request with this session's cookie. 
-passport.serializeUser((dbRowID, done) => {
-    console.log("SerializeUser. Input is",dbRowID);
-    done(null, dbRowID);
+passport.serializeUser((dbRowData, done) => {
+    console.log("SerializeUser. Input is",dbRowData);
+    done(null, dbRowData);
 });
 
 // Called by passport.session pipeline stage on every HTTP request with
@@ -185,12 +185,13 @@ passport.serializeUser((dbRowID, done) => {
 // Where we should lookup user database info. 
 // Whatever we pass in the "done" callback becomes req.user
 // and can be used by subsequent middleware.
-passport.deserializeUser((dbRowID, done) => {
-    console.log("deserializeUser. Input is:", dbRowID);
+
+passport.deserializeUser((dbRowData, done) => {
+    console.log("deserializeUser. Input is:", dbRowData);
     // here is a good place to look up user data in database using
     // dbRowID. Put whatever you want into an object. It ends up
     // as the property "user" of the "req" object. 
-    let userData = {id: dbRowID };
+    let userData = dbRowData;
     console.log(userData);
     done(null, userData);
 });
@@ -198,7 +199,7 @@ passport.deserializeUser((dbRowID, done) => {
 ///////////////////////end of middleware functions//////////////
 
 
-function page_redirection_checking(res, req, next) {
+function page_redirection_checking(req, res, next) {
 
     console.log(req.user);
     //check if user has a flashcard in database, if not
@@ -216,23 +217,28 @@ function page_redirection_checking(res, req, next) {
         let data_object= {};
         if (err) {
             console.log("page_redirection_checking: data Selection error",err);
+            next();
         } else {
             console.log("page_redirection_checking: data selection success");
             
             if(dbData == undefined) {
                 //redirect to creation page.
                 data_object = {page: "creation"};
-                res.json(data_object)
-            }else [
+                res.json(data_object);
+            }else {
                 data_object = {page: "Review"};
-                res.json(data_object)
-            ]
+                res.json(data_object);
+            }
         }
     }
 
 
 }
 
+
+function fetch_userNmae (req, res, next) {
+    res.json(req.user);
+}
 
 
 function InsertNewUser(profile) {

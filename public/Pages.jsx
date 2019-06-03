@@ -13,12 +13,42 @@ class Footer extends React.Component {
 state = {user_name: "deafault"};
 constructor(props){
   super(props);
-  this.state.user_name = this.props.user_name;
 }
+
+componentDidMount = () => {
+  let url = "/user/userName";
+      let xhr = createCORSRequest('GET', url);
+     
+            // checking if browser does CORS
+            if (!xhr) {
+              alert('CORS not supported');
+              return;
+            }
+            // Load some functions into response handlers.
+            //runs when respond is back.
+            xhr.onload = () => {
+                let object = JSON.parse(xhr.responseText); 
+               
+                console.log(object.user_nm);
+              
+                this.setState({user_name: object.user_nm});
+               
+                //console.log("i am done");
+            };
+     
+            xhr.onerror = function() {
+              alert('Woops, there was an error to save.');
+            };
+     
+            // Actually send request to server
+            console.log("before sending user/username req");
+      xhr.send();
+}
+
 render() {
   return (
       <div className="username_div">
-          <p> UserName </p> 
+          <p>{this.state.user_name}</p> 
       </div>
     );
   }
@@ -135,8 +165,7 @@ class Review_txt_components extends React.Component {
           <div className="lower_butt_div">
               <button id="save_butt_id" onClick= {this.RequestToSave}> Save </button> 
           </div>
-          <Footer user_name="deafult: Nabil Furmoli"/>
-
+          <Footer/>
         </div>
         );
 
@@ -154,7 +183,7 @@ class Review_txt_components extends React.Component {
            <div className="lower_butt_div">
               <button id="next_butt_id"> Next </button> 
            </div>
-           <Footer user_name="deafult: Nabil Furmoli"/>
+           <Footer/>
 
         </div>
      );
