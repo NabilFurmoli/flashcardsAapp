@@ -58,21 +58,31 @@ render() {
 ////////////////////////////////////////////////////////////
 
 class Review_txt_components extends React.Component {
-  state = {current_output: "farsi"};
+  state = {current_output: "farsi", cardCount: 0};
 
   constructor(props){
     super(props);
     console.log("rev_txt_comp, the array is:"+ this.props.array);
     this.state.cards = this.props.array;
+    this.state.current_output = this.state.cards[0].trans_txt;
   }
 
-  componentDidMount() {
+  flipToNextCard = () => {
+
+    // if end of card start from zero index.
+    if(this.state.cardCount == this.state.cards.length -1){
+      this.setState({cardCount: 0});
+    }else {
+      this.setState({cardCount: this.state.cardCount + 1});
+    }
    
+    this.setState({current_output: this.state.cards[this.state.cardCount].trans_txt});
   }
+
   render() {
     return (
       <div className="rev_txtbox_div">
-        <p className="rev_textbox_2" id="rev_output_txtbox_id">{this.state.card[0].trans_txt}</p>
+        <p className="rev_textbox_2" onClick={this.flipToNextCard} id="rev_output_txtbox_id">{this.state.current_output}</p>
         <textarea placeholder="English" className="rev_textbox_1" id="rev_input_txtbox_id"/>
      </div>
     );
