@@ -79,11 +79,27 @@ class Review_txt_components extends React.Component {
     this.setState({current_output: this.state.cards[this.state.cardCount].trans_txt});
   }
 
+  checkForCorrection = (event) => {
+    // might to make it more optimizez by case cheking and triming and staff.
+    let user_ans = document.getElementById("rev_input_txtbox_id").value;
+    console.log("event.charchode: "+event.charCode);
+    if (event.charCode == 13 ){
+      if (user_ans == this.state.cards[this.state.cardCount].EngTxt) {
+        alert("Correct");
+        console.log("correct");
+      } else {
+        alert("incorrect");
+        console.log("incorrect");
+      }
+    }
+    
+  }
+
   render() {
     return (
       <div className="rev_txtbox_div">
         <p className="rev_textbox_2" onClick={this.flipToNextCard} id="rev_output_txtbox_id">{this.state.current_output}</p>
-        <textarea placeholder="English" className="rev_textbox_1" id="rev_input_txtbox_id"/>
+        <textarea placeholder="English" className="rev_textbox_1" id="rev_input_txtbox_id" onKeyPress={this.checkForCorrection}/>
      </div>
     );
   }
