@@ -89,20 +89,49 @@ class Review_txt_components extends React.Component {
   }
 }
  
-
 //////////// Pages component //////////////////
 /////////////////////////////////////////////
  class Pages extends React.Component {
     state = {current_page: "creation", cards_array: null};
 
     changeToRevPage = () => {
-      this.setState({current_page: "Review"});
+      // when the user changes back to review page you want to refetch cards from database since
+      // since maybe user has added new cards.
+      // this call also changes current_page to review page.
+      this.requestFor_CardsData();
     }
 
     changeToCreationPage = () => {
       this.setState({current_page: "creation"});
     }
 
+    requestFor_CardsData = () => {
+      let url = "/user/page";
+      let xhr = createCORSRequest('GET', url);
+     
+            // checking if browser does CORS
+            if (!xhr) {
+              alert('CORS not supported');
+              return;
+            }
+            // Load some functions into response handlers.
+            //runs when respond is back.
+            xhr.onload = () => {
+                let object = JSON.parse(xhr.responseText); 
+               
+                console.log(object);
+                this.setState({current_page: "Review", cards_array:object.cardsArray});
+                //console.log("i am done");
+            };
+     
+            xhr.onerror = function() {
+              alert('Woops, there was an error to save.');
+            };
+     
+            // Actually send request to server
+            console.log("before sending user/page req");
+      xhr.send();
+    }
     componentDidMount() {
       let url = "/user/page";
       let xhr = createCORSRequest('GET', url);
