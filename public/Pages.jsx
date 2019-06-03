@@ -8,7 +8,10 @@ function createCORSRequest(method, url) {
  }
 
 
- /////////  Reusable Shared components //////////////////
+
+ /******************Reusable Shared components****************/
+/**************************************************************/
+/**************************************************************/
 class Footer extends React.Component {
 state = {user_name: "deafault"};
 constructor(props){
@@ -146,10 +149,12 @@ class Review_txt_components extends React.Component {
             };
      
             // Actually send request to server
-            console.log("before sending user/page req");
+            console.log("requestFor_CardsData: before sending user/page req");
       xhr.send();
     }
     componentDidMount() {
+      // after comonent is rendered you want to fetch the dtabase data and also
+      // information about whether to render creation page or review page.
       let url = "/user/page";
       let xhr = createCORSRequest('GET', url);
      

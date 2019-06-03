@@ -24,9 +24,12 @@ const googleLoginData = {
 };
 
 
+/*******************Server pipeline Starts***************/
+/********************************************************/
+/********************************************************/
+
 passport.use( new GoogleStrategy(googleLoginData, gotProfile) );
 
-// put together the server pipeline
 const app = express()
 app.use('/', printURL);
 
@@ -93,8 +96,10 @@ app.use( fileNotFound );            // otherwise not found
 app.listen(port, function (){console.log('Listening...');} )
 
 
-/////////////////Function calls implementations are below///////////////
-////////////////////////////////////////////////////////////////////////
+
+/*******************Function calls implementations are below***************/
+/**************************************************************************/
+/**************************************************************************/
 
 // middleware functions
 
@@ -222,7 +227,7 @@ function page_redirection_checking(req, res, next) {
             console.log("page_redirection_checking: data selection success");
             console.log("displaying dpData");
             console.log(dbData);
-            if(dbData == undefined) {
+            if(dbData.length == 0) {
                 //redirect to creation page.
                 data_object = {page: "creation", cardsArray: dbData};
                 res.json(data_object);
@@ -398,30 +403,6 @@ function reachGoogleApi(eng_text, res) {
         }
     } // end callback function
 }
-
-
-//let id = 1;
-
-// function removeFrom_usertabele(req) {
-//     const dbdelete = "DELETE FROM user_data WHERE Google_id = "+req.user.id +" ";
-    
-//     console.log(dbdelete);
-//     // to accces the user data user req.user. ...
-//     db.run(dbdelete, tableDeleteCallback);
-
-//     // Always use the callback for database operations and print out any
-//     // error messages you get.
-//     // This database stuff is hard to debug, give yourself a fighting chance.
-//     function tableDeleteCallback(err) {
-//         if (err) {
-//         console.log("userdb; user deletion error",err);
-        
-//         } else {
-//         console.log("userdb; user deletion success");
-    
-//         }
-//     }
-// }
 
 function fileNotFound(req, res) {
     let url = req.url;
