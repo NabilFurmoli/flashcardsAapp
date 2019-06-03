@@ -84,7 +84,8 @@ class Review_txt_components extends React.Component {
     let user_ans = document.getElementById("rev_input_txtbox_id").value;
     console.log("event.charchode: "+event.charCode);
     if (event.charCode == 13 ){
-      if (user_ans == this.state.cards[this.state.cardCount].EngTxt) {
+      console.log(user_ans.toLowerCase().trim()+ " = "+ this.state.cards[this.state.cardCount].EngTxt.toLowerCase().trim());
+      if (user_ans.toLowerCase().trim() == this.state.cards[this.state.cardCount - 1].EngTxt.toLowerCase().trim()) {
         alert("Correct");
         console.log("correct");
       } else {
