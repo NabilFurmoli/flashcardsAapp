@@ -67,12 +67,13 @@ class Review_txt_components extends React.Component {
     super(props);
     console.log("rev_txt_comp, the array is:"+ this.props.array);
     this.state.cards = this.props.array;
-    this.state.current_output = this.state.cards[0].trans_txt;
+    this.state.current_output = this.state.cards[this.state.cardCount].trans_txt;
   }
 
   flipToNextCard = () => {
 
     // if end of card start from zero index.
+
     if(this.state.cardCount == this.state.cards.length -1){
       this.setState({cardCount: 0});
     }else {
@@ -87,8 +88,14 @@ class Review_txt_components extends React.Component {
     let user_ans = document.getElementById("rev_input_txtbox_id").value;
     console.log("event.charchode: "+event.charCode);
     if (event.charCode == 13 ){
-      console.log(user_ans.toLowerCase().trim()+ " = "+ this.state.cards[this.state.cardCount].EngTxt.toLowerCase().trim());
-      if (user_ans.toLowerCase().trim() == this.state.cards[this.state.cardCount - 1].EngTxt.toLowerCase().trim()) {
+      let index;
+      if(this.state.cardCount == 0){
+        index = 0;
+      }else {
+        index = this.state.cardCount-1;
+      }
+      console.log(user_ans.toLowerCase().trim()+ " = "+ this.state.cards[index].EngTxt.toLowerCase().trim());
+      if (user_ans.toLowerCase().trim() == this.state.cards[index].EngTxt.toLowerCase().trim()) {
         alert("Correct");
         console.log("correct");
       } else {
