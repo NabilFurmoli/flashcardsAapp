@@ -167,7 +167,7 @@ function gotProfile(accessToken, refreshToken, profile, done) {
     // key for db Row for this user in DB table.
     // Note: cannot be zero, has to be something that evaluates to
     // True.  
-    let dbRowData = {id: profile.id, name: profile.name.givenName};
+    let dbRowData = {id: profile.id, name: profile.name.givenName +" "+ profile.name.familyName};
     done(null, dbRowData); 
     
 }
