@@ -34,7 +34,7 @@
         margin: 0;
         width: 70%;
         height: 25vh;
-        margin-bottom: 5vh;
+        margin-bottom: 3vh;
     }
     
     .textbox_2 {
@@ -60,4 +60,9 @@
         height: 4vh;
         margin-top: 1vh;
     }
+
+    #next_butt_id {	
+    	margin-top: 10vh;
+	}
+
 }

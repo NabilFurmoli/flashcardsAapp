@@ -38,11 +38,12 @@ button {
 
 
 .logo_div{
-    margin-top: 5vw;
+    margin-top: 3vw;
     margin-bottom: 6vw;
     display: flex;
     width: 100%;
-    flex-grow: 1; 
+    flex-grow: 1;
+    flex-shrink: 2;
 }
 
 .logo_div button {
@@ -64,7 +65,8 @@ button {
     display: flex;
     border: 1px;
     justify-content: space-around;
-    flex-grow: 3;
+    flex-grow: 2;
+    flex-shrink: 1;
 }
 
 
@@ -102,26 +104,28 @@ button {
     flex-grow: 1;
     font-size: 100%;
     opacity: 0.6;
-    margin-right: 10vw;
-    margin-left: 10vw;
+    margin-right: 20vw;
+    margin-left: 20vw;
     padding: 2vw;
 }
 
 .rev_textbox_2 {
-    flex-grow: 6;
+    flex-grow: 9;
     border: solid 2px #70C7A9;
     font-size: 100%;
     opacity: 0.6;
+text-align: center;
     margin-bottom: 5vw;
-    margin-right: 10vw;
-    margin-left: 10vw;
+    margin-right: 20vw;
+    margin-left: 20vw;
     padding: 2vw;
 }
 
 
 /********* save button *********/
 .lower_butt_div {
-    flex-grow: 1;
+    flex-shrink: 3;
+    flex-grow:1;
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -130,7 +134,8 @@ button {
 .lower_butt_div button {
     align-self: flex-end;
     background-color: #70C7A9;
-    margin-top: 10vw;
+    margin-top: 6vw;
+margin-bottom: 4vw;
     margin-right: 13%;
     border-style: none;
     color: snow;

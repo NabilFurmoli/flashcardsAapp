@@ -4,5 +4,10 @@
     
     
     .login_page_div {
+        flex-direction: column;
+        font-size: 200%;
     }
-}
+	.left_div{flex-grow:3;}
+	.right_div{flex_grow:1;}
+
+}   
