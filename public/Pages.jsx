@@ -58,11 +58,21 @@ render() {
 ////////////////////////////////////////////////////////////
 
 class Review_txt_components extends React.Component {
+  state = {current_output: "farsi"};
 
+  constructor(props){
+    super(props);
+    console.log("rev_txt_comp, the array is:"+ this.props.array);
+    this.state.cards = this.props.array;
+  }
+
+  componentDidMount() {
+   
+  }
   render() {
     return (
       <div className="rev_txtbox_div">
-        <p className="rev_textbox_2" id="rev_output_txtbox_id"> </p>
+        <p className="rev_textbox_2" id="rev_output_txtbox_id">{this.state.card[0].trans_txt}</p>
         <textarea placeholder="English" className="rev_textbox_1" id="rev_input_txtbox_id"/>
      </div>
     );
@@ -73,7 +83,7 @@ class Review_txt_components extends React.Component {
 //////////// Pages component //////////////////
 /////////////////////////////////////////////
  class Pages extends React.Component {
-    state = {current_page: "creation"};
+    state = {current_page: "creation", cards_array: null};
 
     changeToRevPage = () => {
       this.setState({current_page: "Review"});
@@ -99,10 +109,10 @@ class Review_txt_components extends React.Component {
                
                 console.log(object);
                 if (object.page == "creation") {
-                  this.setState({current_page: object.page});
+                  this.setState({current_page: object.page, cards_array:object.cardsArray});
                   
                 } else {
-                  this.setState({current_page: object.page});
+                  this.setState({current_page: object.page, cards_array:object.cardsArray});
                 }
                 //console.log("i am done");
             };
@@ -179,7 +189,7 @@ class Review_txt_components extends React.Component {
             <button className="logo_butt" id="add_butt_id" onClick={this.changeToCreationPage}> Add </button>
             <h1> Lango! </h1>
            </div>
-           <Review_txt_components/>
+           <Review_txt_components array={this.state.cards_array}/>
            <div className="lower_butt_div">
               <button id="next_butt_id"> Next </button> 
            </div>
