@@ -30,9 +30,12 @@ h1 {
 }
 
 button {
+    outline: none;
     border-top-left-radius: 30%;
     border-bottom-right-radius: 30%;
 }
+
+
 
 /*********  logo *********/
 
@@ -59,6 +62,13 @@ button {
     
 }
 
+.logo_div button:hover {
+    bottom: 2px;
+    right: 2px;
+    box-shadow: 0px 0px 20px 1px #606B9B;
+  }
+  
+
 /*********  Main Text Box *********/
 .txtbox_div{
     width: 100%;
@@ -79,6 +89,13 @@ button {
     opacity: 0.6;
 }
 
+.textbox_1:hover {
+    bottom: 2px;
+    right: 2px;
+    box-shadow: 0px 0px 20px 1px #606B9B;
+  }
+  
+
 .textbox_2 {
     width: 30%;
     border: solid 2px #70C7A9;
@@ -87,7 +104,12 @@ button {
     padding: 2vw;
     opacity: 0.6;
 }
-
+.textbox_2:hover {
+    bottom: 2px;
+    right: 2px;
+    box-shadow: 0px 0px 20px 1px #70C7A9;
+  }
+  
 /*********  Review Text Box *********/
 .rev_txt_butt_div {
     width: 100%;
@@ -118,7 +140,7 @@ button {
 .rev_textbox_1:hover {
     bottom: 2px;
     right: 2px;
-    box-shadow: 0px 0px 20px 1px #70C7A9;
+    box-shadow: 0px 0px 20px 1px #606B9B;
   }
   
 
@@ -155,12 +177,18 @@ button {
     align-self: flex-end;
     background-color: #70C7A9;
     margin-top: 6vw;
-margin-bottom: 4vw;
+    margin-bottom: 4vw;
     margin-right: 13%;
     border-style: none;
     color: snow;
     font-size: 80%;
     padding: 1vw 2vw 1vw 2vw;
+}
+
+.lower_butt_div button:hover {
+    bottom: 2px;
+    right: 2px;
+    box-shadow: 0px 0px 20px 1px #70C7A9;
 }
 
 

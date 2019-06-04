@@ -201,8 +201,11 @@ class Review_txt_components extends React.Component {
      RequestToSave = () => {
       let url;
       let Eng_text = document.getElementById("input_txtbox_id").value;
-      
-      url = "store?english=" + Eng_text + "&" + "other_language=" + translated_txt;
+
+      if (Eng_text == ""){
+        alert("Please add a phrase to be saved");
+      } else {
+        url = "store?english=" + Eng_text + "&" + "other_language=" + translated_txt;
       
       //console.log(url);
           let xhr = createCORSRequest('GET', url);
@@ -228,8 +231,8 @@ class Review_txt_components extends React.Component {
             };
      
             // Actually send request to server
-      xhr.send();
-     return   
+      xhr.send(); 
+      }
      }
 
   render () {
