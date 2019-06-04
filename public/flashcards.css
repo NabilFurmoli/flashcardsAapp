@@ -89,6 +89,12 @@ button {
 }
 
 /*********  Review Text Box *********/
+.rev_txt_butt_div {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 3;
+}
 .rev_txtbox_div{
     width: 100%;
     display: flex;
@@ -114,7 +120,6 @@ button {
     border: solid 2px #70C7A9;
     font-size: 100%;
     opacity: 0.6;
-text-align: center;
     margin-bottom: 5vw;
     margin-right: 20vw;
     margin-left: 20vw;

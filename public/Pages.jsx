@@ -108,10 +108,15 @@ class Review_txt_components extends React.Component {
 
   render() {
     return (
-      <div className="rev_txtbox_div">
-        <p className="rev_textbox_2" onClick={this.flipToNextCard} id="rev_output_txtbox_id">{this.state.current_output}</p>
-        <textarea placeholder="English" className="rev_textbox_1" id="rev_input_txtbox_id" onKeyPress={this.checkForCorrection}/>
-     </div>
+      <div className="rev_txt_butt_div">
+          <div className="rev_txtbox_div">
+            <p className="rev_textbox_2" id="rev_output_txtbox_id">{this.state.current_output}</p>
+            <textarea placeholder="English" className="rev_textbox_1" id="rev_input_txtbox_id" onKeyPress={this.checkForCorrection}/>
+          </div>
+          <div className="lower_butt_div">
+              <button id="next_butt_id" onClick={this.flipToNextCard}> Next </button> 
+           </div>
+      </div>
     );
   }
 }
@@ -258,9 +263,6 @@ class Review_txt_components extends React.Component {
             <h1> Lango! </h1>
            </div>
            <Review_txt_components array={this.state.cards_array}/>
-           <div className="lower_butt_div">
-              <button id="next_butt_id"> Next </button> 
-           </div>
            <Footer/>
 
         </div>
