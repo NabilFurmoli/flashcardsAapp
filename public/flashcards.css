@@ -115,16 +115,31 @@ button {
     padding: 2vw;
 }
 
+.rev_textbox_1:hover {
+    bottom: 2px;
+    right: 2px;
+    box-shadow: 0px 0px 20px 1px #70C7A9;
+  }
+  
+
 .rev_textbox_2 {
     flex-grow: 9;
     border: solid 2px #70C7A9;
-    font-size: 100%;
+    font-size: 200%;
     opacity: 0.6;
     margin-bottom: 5vw;
     margin-right: 20vw;
     margin-left: 20vw;
     padding: 2vw;
+    text-align: center;
 }
+
+.rev_textbox_2:hover {
+    bottom: 2px;
+    right: 2px;
+    box-shadow: 0px 0px 20px 1px #70C7A9;
+  }
+  
 
 
 /********* save button *********/

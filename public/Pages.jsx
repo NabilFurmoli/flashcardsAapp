@@ -1,4 +1,3 @@
-
 import {Text_components, translated_txt} from './Main_text_component.js';
 
 function createCORSRequest(method, url) {
