@@ -193,7 +193,14 @@ class Review_txt_components extends React.Component {
                 let object = JSON.parse(xhr.responseText); 
                
                 console.log(object);
-                this.setState({current_page: "Review", cards_array:object.cardsArray});
+
+                if(object.cardsArray.length == 0){
+                  this.setState({current_page: "creation"});
+                  alert("You have no saved Flashcards, please add some.");
+                }else {
+                  this.setState({current_page: "Review", cards_array:object.cardsArray});
+                }
+                
                 //console.log("i am done");
             };
      
