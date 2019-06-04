@@ -59,13 +59,55 @@ render() {
 ///////////////// Review Page codes ////////////////////////
 ////////////////////////////////////////////////////////////
 
+class CardFront extends React.Component {
+  render(props) {
+    return(
+      <div className='card-side side-front'>
+         <div className='card-side-container'>
+              <p id='cardFront_p_id'>{this.props.text}</p>
+        </div>
+      </div>
+    )
+  }
+}
+
+// React component for the back side of the card
+class CardBack extends React.Component {
+  render(props) {
+    return(
+      <div className='card-side side-back'>
+         <div className='card-side-container'>
+              <p id='cardBack_p_id'>{this.props.text}</p>
+        </div>
+      </div>
+    )
+  }
+}
+
+// React component for the card (main component)
+class Card extends React.Component {
+  render(props) {
+    return(
+      <div className='rev_textbox_2 card-container'>
+        <div className='card-body'>
+          <CardBack text={this.props.eng_txt} />
+
+          <CardFront text={this.props.trans_txt} />
+        </div>
+      </div>
+    )
+  }
+}
+
+
 class Review_txt_components extends React.Component {
-  state = {current_output: "farsi", cardCount: 0};
+  state = {current_output: "farsi", curr_eng_txt: "english", cardCount: 0};
 
   constructor(props){
     super(props);
     console.log("rev_txt_comp, the array is:"+ this.props.array);
     this.state.cards = this.props.array;
+    this.state.curr_eng_txt = this.state.cards[this.state.cardCount].EngTxt;
     this.state.current_output = this.state.cards[this.state.cardCount].trans_txt;
   }
 
@@ -78,7 +120,7 @@ class Review_txt_components extends React.Component {
     }else {
       this.setState({cardCount: this.state.cardCount + 1});
     }
-   
+    this.setState({curr_eng_txt: this.state.cards[this.state.cardCount].EngTxt});
     this.setState({current_output: this.state.cards[this.state.cardCount].trans_txt});
   }
 
@@ -109,7 +151,7 @@ class Review_txt_components extends React.Component {
     return (
       <div className="rev_txt_butt_div">
           <div className="rev_txtbox_div">
-            <p className="rev_textbox_2" id="rev_output_txtbox_id">{this.state.current_output}</p>
+            <Card className="rev_textbox_2" id="rev_output_txtbox_id" eng_txt={this.state.curr_eng_txt} trans_txt={this.state.current_output}></Card>
             <textarea placeholder="English" className="rev_textbox_1" id="rev_input_txtbox_id" onKeyPress={this.checkForCorrection}/>
           </div>
           <div className="lower_butt_div">
