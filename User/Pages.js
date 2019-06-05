@@ -600,6 +600,10 @@ function (_React$Component7) {
 
       }; //state = {current_page: "Main"};
 
+        if (obj.Count > 0) {
+          this.changeToRevPage(); //this.setState({current_page: "Review"});
+        }
+      }; //state = {current_page: "Main"};
 
       newXhr.onerror = function () {
         console.log('browser sees error');
