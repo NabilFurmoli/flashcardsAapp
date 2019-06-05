@@ -70,7 +70,9 @@ function (_React$Component2) {
       }, React.createElement("img", {
         src: "./search.png"
       })), React.createElement("button", {
-        onClick: "loginAJAX"
+        onClick: function onClick() {
+          location.href = "auth/google";
+        }
       }, " Log in with Google "))));
     }
   }]);
