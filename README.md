@@ -1,4 +1,4 @@
-# flashcardsAapp
+# Lango
 •	Responsive web app for translating and storing English to user’s interested language.
 •	Full Stack Web Application using React, Node.js, and Express.
 •	Dynamically translates languages using Google machine learning.
