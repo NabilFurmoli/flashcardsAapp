@@ -1,8 +1,4 @@
 
-
-//client id : 260336705111-3gd5jrmbnpleva3adsu8algk2udijfq6.apps.googleusercontent.com
-//client secret: 8eRKb-V1bLAx8XBpi1ToyQ8S
-
 const express = require('express');
 const passport = require('passport');
 const cookieSession = require('cookie-session');
